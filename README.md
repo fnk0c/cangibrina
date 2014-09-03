@@ -4,7 +4,7 @@ cangibrina
 Dashboard Finder
 
 Cangibrina é uma ferramenta que visa a obtenção do painel de administração de sites
-utilizando requests, google e uma wordlist para isso.
+utilizando requests, google, nmap e uma wordlist para isso.
 
 ====================================================================================================
 Requisitos:
@@ -17,8 +17,6 @@ Como instalar Mechanize:
 Linux:
 	Debian: sudo apt-get install python-mechanize
 	Arch: sudo pacman -S python2-mechanize
-Windows:
-	
 
 ====================================================================================================
 Uso:
