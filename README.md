@@ -20,7 +20,7 @@ Linux:
 
 ====================================================================================================
 Uso:     
-python cangibrina-1.7.py -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inurl:login' -s target
+python cangibrina-1.7.py -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inurl:login' -s target_out -n 
 
 -u > referente ao site alvo  
 -w > referente a wordlist personalizada  
