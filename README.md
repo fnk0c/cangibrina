@@ -40,5 +40,5 @@ python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face -n
  
 ====================================================================================================
 Bugs Conhecidos: 
-Primeira execução costuma utilizar apenas um thread, caso aconteça basta fechar o terminal e
-reiniciar a execução do Cangibrina 
+Primeira execução costuma utilizar apenas um thread. Caso aconteça, basta fechar o terminal e
+reiniciar a execução do Cangibrina.
