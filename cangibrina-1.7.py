@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #coding=utf-8
 
+
 __AUTOR__	= 'Fnkoc'
 __DATA__	= '31/08/14'
 __VERSAO__	= '1.7'
