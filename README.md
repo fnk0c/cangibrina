@@ -32,14 +32,13 @@ python cangibrina-1.7.py -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inu
 -n > referente ao uso do nmap para scannear portas no servidor  
 
 Outros exemplos: 
-python cangibrina-1.7.py -u facebook.com -w /root/diretorios.txt -t 10 -v 
-python cangibrina-1.7.py -u facebook.com -v 
-python cangibrina-1.7.py -u facebook.com -g -s face -v 
-python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face 
-python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face -n 
-
+python cangibrina-1.7.py -u facebook.com -w /root/diretorios.txt -t 10 -v  
+python cangibrina-1.7.py -u facebook.com -v  
+python cangibrina-1.7.py -u facebook.com -g -s face -v  
+python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face  
+python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face -n  
+ 
 ====================================================================================================
 Bugs Conhecidos: 
 Primeira execução costuma utilizar apenas um thread, caso aconteça basta fechar o terminal e
 reiniciar a execução do Cangibrina 
->>>>>>> 7d4bd4f3d31c9273fec23763ddbb7f1775b4627f
