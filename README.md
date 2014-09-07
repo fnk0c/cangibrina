@@ -19,8 +19,8 @@ Linux:
 	Arch: sudo pacman -S python2-mechanize 
 
 ====================================================================================================
-Uso: 
-python cangibrina-1.7.py -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inurl:login' -s target 
+Uso:
+python cangibrina-1.7.py -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inurl:login' -s target
 
 -u > referente ao site alvo  
 -w > referente a wordlist personalizada  
@@ -31,7 +31,7 @@ python cangibrina-1.7.py -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inu
 -s > referente ao arquivo gerado com os resultados do google  
 -n > referente ao uso do nmap para scannear portas no servidor  
 
-Outros exemplos: 
+Outros exemplos:
 python cangibrina-1.7.py -u facebook.com -w /root/diretorios.txt -t 10 -v  
 python cangibrina-1.7.py -u facebook.com -v  
 python cangibrina-1.7.py -u facebook.com -g -s face -v  
