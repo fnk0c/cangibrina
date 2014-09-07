@@ -48,7 +48,7 @@ def ajuda():
 
   Cangibrina 1.7 | coded by Fnkoc
 
-uso: cangibrina-1.7.py -a -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v
+uso: cangibrina-1.7.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v
 
 Comandos:
 
