@@ -15,8 +15,11 @@ Nmap para o argumento -n
 ====================================================================================================
 Como instalar Mechanize:     
 Linux:     
-	Debian: sudo apt-get install python-mechanize     
-	Arch: sudo pacman -S python2-mechanize      
+        Debian: sudo apt-get install python-mechanize     
+        Arch: sudo pacman -S python2-mechanize     
+Windows:
+        Download: https://pypi.python.org/pypi/mechanize/
+        python setup.py install
 
 ====================================================================================================
 Uso:     
