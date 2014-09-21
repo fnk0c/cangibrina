@@ -23,6 +23,10 @@ Windows:
 
 Instalação:
 ====================================================================================================     
+Faça o download do programa
+
+	git clone http://github.com/fnk0c/cangibrina.git
+
 como root rode o script "bash_script.sh"
 
 	sudo sh bash_script.sh
