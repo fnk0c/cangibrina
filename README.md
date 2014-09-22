@@ -3,7 +3,7 @@ cangibrina
 
 Dashboard Finder 
  
-Cangibrina é uma ferramenta que visa a obtenção do painel de administração de sites 
+Cangibrina é uma ferramenta multiplataforma que visa a obtenção do painel de administração de sites 
 utilizando requests, google, nmap e uma wordlist para isso. 
 
 Requisitos:  
