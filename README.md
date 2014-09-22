@@ -21,7 +21,7 @@ Windows:
         Download: https://pypi.python.org/pypi/mechanize/     
         python setup.py install     
 
-Instalação:
+Instalação Linux:
 ====================================================================================================     
 Faça o download do programa, entre no diretório e execute o script "bash_script.sh"
 
