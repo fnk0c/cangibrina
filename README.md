@@ -3,7 +3,7 @@ cangibrina
 
 Dashboard Finder 
  
-Cangibrina é uma ferramenta que visa a obtenção do painel de administração de sites 
+Cangibrina é uma ferramenta multiplataforma que visa a obtenção do painel de administração de sites 
 utilizando requests, google, nmap e uma wordlist para isso. 
 
 Requisitos:  
@@ -21,14 +21,12 @@ Windows:
         Download: https://pypi.python.org/pypi/mechanize/     
         python setup.py install     
 
-Instalação:
+Instalação Linux:
 ====================================================================================================     
-Faça o download do programa
+Faça o download do programa, entre no diretório e execute o script "bash_script.sh"
 
 	git clone http://github.com/fnk0c/cangibrina.git
-
-como root rode o script "bash_script.sh"
-
+	cd cangibrina
 	sudo sh bash_script.sh
 
 Uso:

@@ -1,1 +1,1 @@
-Nesta past se encontra os arquivos log gerados
+Nesta pasta se encontra os arquivos log gerados
