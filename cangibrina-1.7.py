@@ -137,6 +137,7 @@ def conexao(url, wl, verbose, threads):
 		if wl == 'default':
 			os.chdir('Wordlist')
 			diretorios = open('default', 'r')
+			os.chdir('..')
 		else:
 			diretorios = open((wl), 'r')
 	except Exception, e:
@@ -145,7 +146,6 @@ def conexao(url, wl, verbose, threads):
 	'''==========================================================================='''
 	try:	# Brute force
 		print '\n [+] Testando...\n'
-		os.chdir('..')
 		os.chdir('src')
 		os.chdir('Output')
 		log = open(url[11:-1]+'.txt', 'w')
@@ -211,7 +211,7 @@ def conexao(url, wl, verbose, threads):
 def google(query, saida):
 	print '\n\t[!] Pesquisando no Google...\n'
 	if not args.dork:
-		query = 'site:' + args.url + ' ((intitle:painel controle | administracao | admin | login | entrar) | (inurl:admin | adm | login | entrar | painel | root)) ext:(php | asp | apsx)'
+		query = 'site:' + args.url.replace('http://', '') + ' ((intitle:painel controle | administracao | admin | login | entrar) | (inurl:admin | adm | login | entrar | painel | root)) ext:(php | asp | apsx)'
 	else:
 		query = ''.join(query)
 		query = query.strip("'")
@@ -246,7 +246,7 @@ def google(query, saida):
 '''====N.M.A.P===================================================================='''
 def nmap():
 	print '\n\t[!] Iniciando Nmap...\n'
-	comando = 'sudo nmap -sS -sV www.%s' %args.url
+	comando = 'sudo nmap -sS -sV www.%s' %args.url.replace('http://', '')
 	print '\n', comando
 	os.system(comando)
 
