@@ -16,9 +16,10 @@ try:
 except:
 	print '''
 	[!] Necessária a intalação do modulo mechanize.
+	
 	Debian:sudo apt-get install python-mechanize
 	Arch:sudo pacman -S python2-mechanize
-	Maiores informações no arquivo README.md
+	Windows: Maiores informações no arquivo README.md
 '''
 	sys.exit()
 from bs4 import BeautifulSoup
@@ -27,6 +28,19 @@ import argparse
 import threading
 import urllib as u
 import os
+
+'''==============================================================================='''
+#Defining term colors
+if sys.platform == 'win32':
+	red = ''
+	green = ''
+	yellow = ''
+	default = ''
+else:
+	red = '\033[31m'
+	green = '\033[32m'
+	yellow = '\033[33m'
+	default = '\033[00m'
 
 '''==============================================================================='''
 def limpar():						# Limpar Tela
@@ -58,10 +72,10 @@ Comandos:
   -v\t--verbose\tHabilita modo verbose
   -t\t--threads\tInforma número de processos a serem executados
 \t\t\t(opcional, default = 10)
-  -g\t--google\tBusca Google
+  -g\t--google\tBusca através dos motores Google e DuckDuckGo
   -d\t--dork\t\tInforma dork de busca
   -s\t--saida\t\tInforma nome do arquivo log gerado
-  -n\t--nmap\t\tUtliza o Nmap para scan de portas no servidor
+  -n\t--nmap\t\tUtliza o Nmap para scan de serviços
 
 ===============================================================================
 
@@ -74,10 +88,10 @@ python cangibrina-1.7.py -u facebook.com -v
 \tFoi utilizada a wordlist e threads padrões. facebook.com como alvo
 
 python cangibrina-1.7.py -u facebook.com -g -s face -v
-\tFoi utilizada a busca do painel através de requests e do google, gerando um arquivo "face" com os resultados
+\tFoi utilizada a busca do painel através de requests e dos motores de busca, gerando um arquivo "face" com os resultados
 
 python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face
-\tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, busca no google, e dork personalizada.
+\tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, motores de busca, e dork personalizada.
 
 python cangibrina-1.7.py -u facebook.com -v -n
 \tFoi utilizado o facebook.com como alvo, wordlis e threads padrões, verbose e nmap para scan de portas.
@@ -123,14 +137,15 @@ def conexao(url, wl, verbose, threads):
 			url = url[7:]
 		url = 'http://www.%s/' % url
 		conn = u.urlopen(url).getcode()
+
 		if conn != 200:
-			print ' [!] O site não pode ser alcançado'
+			print red + ' [!] ' + default + 'O site não pode ser alcançado'
 			sys.exit()
 		else:
-			print '\n [+] Site está online\n Resposta: %s \n' % conn
+			print green + '\n [+] ' + default + 'Site está online\n Resposta: %s \n' % conn
 
 	except Exception, e:
-		print ' [!] ' + str(e) + '\n'
+		print red + ' [!] ' + default + str(e) + '\n'
 		sys.exit()
 
 	try:
@@ -141,30 +156,33 @@ def conexao(url, wl, verbose, threads):
 		else:
 			diretorios = open((wl), 'r')
 	except Exception, e:
-		print ' [!] ' + str(e) + '\n'
+		print red + ' [!] ' + default + str(e) + '\n'
 		sys.exit()
+
 	'''==========================================================================='''
 	try:	# Brute force
-		print '\n [+] Testando...\n'
+		print green + '\n [+] ' + default + 'Testando...\n'
 		os.chdir('src')
 		os.chdir('Output')
 		log = open(url[11:-1]+'.txt', 'w')
+
 		'''======================================================================='''
 		def robots():				# Checando Robots.txt
-			print ' [!] Checando por Robots.txt'
+			print yellow + ' [!] ' + default + 'Checando por Robots.txt'
 			robots = (url + 'robots.txt')
 			r_check = u.urlopen(robots).getcode()
 
 			if r_check == 200:
-				print ' [+] Robots.txt está disponível'
+				print green + ' [+] ' + default + 'Robots.txt está disponível'
 				log.write(robots)
 			else:
-				print ' [-] Robots.txt não está disponível'
-			print ' [+] Arquivo log \"%s.txt\" em \"Cangibrina/src/Output\"\n' % url[11:-1]
+				print red + ' [-] ' + default + 'Robots.txt não está disponível'
+			print green + ' [+] ' + default + 'Arquivo log \"%s.txt\" em \"Cangibrina/src/Output\"\n' % url[11:-1]
 
 			diretorios.close()
 			if args.google:
 				google(args.dork, args.saida)
+				DuckDuckGo(args.dork, args.saida)
 			else:
 				pass
 			if args.nmap:
@@ -183,8 +201,10 @@ def conexao(url, wl, verbose, threads):
 					pass
 				conn = u.urlopen(final).getcode()
 				if conn == 200:
-					print ' [+] Encontrado: %s' % final
+					print green + ' [+] ' + default + 'Encontrado: %s' % final
 					log.write(final)
+				elif conn == 301:
+					print green + ' [+] ' + default + 'Redirecionado: %s' % final
 			sys.exit()
 
 		if __name__ == '__main__':
@@ -199,25 +219,61 @@ def conexao(url, wl, verbose, threads):
 					pass
 
 	except Exception, e:
-		print '\n [!] ' + str(e) + '\n'
+		print red + '\n [!] ' + default + str(e) + '\n'
 		sys.exit()
 	except KeyboardInterrupt:
-		print '\n [!] Você interrompeu o programa\n'
+		print red + '\n [!] ' + default + 'Você interrompeu o programa\n'
 		sys.exit()
+
+
+'''====D.U.C.K.D.U.C.K.G.O========================================================'''
+
+def DuckDuckGo(query, saida):
+	print green + '\n\t[!] ' + default + 'Pesquisando no DuckDuckGo...\n'
+	if not args.dork:
+		query = 'site:' + args.url.replace('http://', '') + ' inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)'
+	else:
+		query = ''.join(query)							#Transforma lista query em string e 
+		query = query.strip("'")						#Remove aspas simples
+	print yellow + '[DORK]' + default +' >> ' + query
+
+	try:
+		query = query.replace(' ', '+')					#Substitui espaços por "+"
+		req = 'http://duckduckgo.com/html/?q=%s' % query
+		html = u.urlopen(req).read()
+		soup = BeautifulSoup(html)
+
+		log = open(saida + '_duck.txt', 'w')
+		for results in soup.findAll('div', attrs={'class':'links_main links_deep'}):
+			for title in results.findAll('a', attrs={'class':'large'}):
+				t = title.text
+				t = t.title()
+			for link in results.findAll('a', attrs={'class':'large'}):
+				l = link.get('href')
+				print t
+				print l + '\n'
+				log.write(str(l) + '\n')
+	except e:
+		print red + ' [!] ' + default + str(e)
+		pass
+
+	print green + '\n [+] ' + default + 'Arquivo log gerado'
+	print green + ' [+] ' + default + 'Arquivo com log em \"Cangibrina/src/Output\"\n'
 
 
 '''====G.O.O.G.L.E================================================================'''
 
 def google(query, saida):
-	print '\n\t[!] Pesquisando no Google...\n'
+	print green + '\n\t[!] ' + default + 'Pesquisando no Google...\n'
 	if not args.dork:
-		query = 'site:' + args.url.replace('http://', '') + ' ((intitle:painel controle | administracao | admin | login | entrar) | (inurl:admin | adm | login | entrar | painel | root)) ext:(php | asp | apsx)'
+		query = 'site:' + args.url.replace('http://', '') + ' inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)'
 	else:
-		query = ''.join(query)
-		query = query.strip("'")
-	print '[DORK] >> ' + query
+		query = ''.join(query)							#Transforma lista query em string e 
+		query = query.strip("'")						#Remove aspas simples
+	print yellow + '[DORK]' + default +' >> ' + query
+
 	try:
-		query = query.replace(' ', '+')		#Transforma lista query em string e substitui espaços por "+"
+		query = query.replace(' ', '+')					#Substitui espaços por "+"
 		req = 'https://www.google.com.br/search?q=%s&num=50&start=0' % query
 		br = mechanize.Browser()
 		br.set_handle_robots(False)						#Nega ser um bot
@@ -225,7 +281,7 @@ def google(query, saida):
 		html = br.open(req).read()						#Puxa código HTML da página 
 		soup = BeautifulSoup(html)
 
-		log = open(saida + '.txt', 'w')
+		log = open(saida + '_google.txt', 'w')
 		for results in soup.findAll(attrs={'class':'g'}):	#Abra "Inspecionar elemento" em seu navegador para compreender
 			for title in results.findAll('h3', attrs={'class':'r'}):
 				t = title.text
@@ -236,17 +292,17 @@ def google(query, saida):
 				print l + '\n'
 				log.write(str(l) + '\n')
 	except e:
-		print ' [!]', e
+		print red + ' [!] ' + default + str(e)
 		pass
 
-	print '\n [+] Arquivo log gerado'
-	print ' [+] Arquivo com log em \"Cangibrina/src/Output\"\n'
+	print green + ' [+] ' + default + 'Arquivo log gerado'
+	print green + ' [+] ' + default + 'Arquivo com log em \"Cangibrina/src/Output\"\n'
 
 
 '''====N.M.A.P===================================================================='''
 def nmap():
-	print '\n\t[!] Iniciando Nmap...\n'
-	comando = 'sudo nmap -sS -sV www.%s' %args.url.replace('http://', '')
+	print green + '\n\t[+] ' + default + 'Iniciando Nmap...\n'
+	comando = 'sudo nmap -PN -sV www.%s' %args.url.replace('http://', '').replace('www.', '')
 	print '\n', comando
 	os.system(comando)
 
