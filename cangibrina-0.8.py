@@ -62,7 +62,7 @@ def ajuda():
 
   Cangibrina 0.8 | coded by Fnkoc
 
-uso: cangibrina-1.7.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v -n -a
+uso: cangibrina-0.8.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v -n -a
 
 Comandos:
 
@@ -82,20 +82,20 @@ Comandos:
 
 Exemplos de uso:
 
-python cangibrina-1.7.py -u facebook.com -w /root/diretorios.txt -t 10 -v
+python cangibrina-0.8.py -u facebook.com -w /root/diretorios.txt -t 10 -v
 \tFoi utilizada uma wordlist personalizada, 10 threads, o modo verbose e o facebook.com como alvo
 
-python cangibrina-1.7.py -u facebook.com -v
-\tFoi utilizada a wordlist e threads padrões. facebook.com como alvo
+python cangibrina-0.8.py -u facebook.com -v -s face_brute
+\tFoi utilizada a wordlist e threads padrões. facebook.com como alvo, modo verbose e arquivo log gerado receberá o nome face_brute
 
-python cangibrina-1.7.py -u facebook.com -g -s face -v
+python cangibrina-0.8.py -u facebook.com -g -s face -v
 \tFoi utilizada a busca do painel através de requests e dos motores de busca, gerando um arquivo "face" com os resultados
 
-python cangibrina-1.7.py -u facebook.com -g -d 'inurl:login' -s face
+python cangibrina-0.8.py -u facebook.com -g -d 'inurl:login' -s face
 \tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, motores de busca, e dork personalizada.
 
-python cangibrina-1.7.py -u facebook.com -v -n -a
-\tFoi utilizado o facebook.com como alvo, wordlis e threads padrões, verbose, user-agent e nmap para scan de portas.
+python cangibrina-0.8.py -u facebook.com -v -n -a
+\tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose, user-agent e nmap para scan de portas.
 
 [IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
 '''
@@ -130,7 +130,7 @@ args = parser.parse_args()
 
 '''====A.D.M.-.F.I.N.D.E.R========================================================'''
 
-def conexao(url, wl, verbose, threads, user_agent):
+def conexao(url, wl, verbose, threads, user_agent, saida):
 	try:
 		if url[:11] == 'http://www.':
 			url = url[11:]
@@ -167,12 +167,12 @@ def conexao(url, wl, verbose, threads, user_agent):
 		if real != url:
 			print red + ' [!] ' + default + 'Site está nos redirecionado para: \n'
 			print real
-			keep = raw_input('\nDeseja continuar? (Y/n)\n >> ').lower()
+			keep = raw_input('\nDeseja utilizar esta URL? (Y/n)\n >> ').lower()
 			
 			if keep == 'n':
-				sys.exit()
-			else:
 				pass
+			else:
+				url = real
 		else:
 			pass
 			
@@ -199,7 +199,11 @@ def conexao(url, wl, verbose, threads, user_agent):
 		print green + '\n [+] ' + default + 'Testando...\n'
 		os.chdir('src')
 		os.chdir('Output')
-		log = open(url[11:-1]+'.txt', 'w')
+		
+		if args.saida:
+			log = open(args.saida + '.txt', 'w')
+		else:
+			log = open('brute_cpanel.txt', 'w')
 
 		'''======================================================================='''
 		def robots():				# Checando Robots.txt
@@ -346,4 +350,4 @@ if len(sys.argv) == 1:
 elif args.help:
 	ajuda()
 else:
-	conexao(args.url, args.wordlist, args.verbose, args.threads, args.user_agent)
+	conexao(args.url, args.wordlist, args.verbose, args.threads, args.user_agent, args.saida)
