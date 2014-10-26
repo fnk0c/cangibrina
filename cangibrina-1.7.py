@@ -253,8 +253,7 @@ def DuckDuckGo(query, saida):
 				print t
 				print l + '\n'
 				log.write(str(l) + '\n')
-	except e:
-		print red + ' [!] ' + default + str(e)
+	except:
 		pass
 
 	print green + '\n [+] ' + default + 'Arquivo log gerado'
@@ -291,8 +290,7 @@ def google(query, saida):
 				print t
 				print l + '\n'
 				log.write(str(l) + '\n')
-	except e:
-		print red + ' [!] ' + default + str(e)
+	except:
 		pass
 
 	print green + ' [+] ' + default + 'Arquivo log gerado'
@@ -302,7 +300,7 @@ def google(query, saida):
 '''====N.M.A.P===================================================================='''
 def nmap():
 	print green + '\n\t[+] ' + default + 'Iniciando Nmap...\n'
-	comando = 'sudo nmap -PN -sV www.%s' %args.url.replace('http://', '').replace('www.', '')
+	comando = 'sudo nmap -PN -sV -sS www.%s' %args.url.replace('http://', '').replace('www.', '')
 	print '\n', comando
 	os.system(comando)
 
