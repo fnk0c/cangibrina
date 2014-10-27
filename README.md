@@ -27,7 +27,7 @@ Faça o download do programa, entre no diretório e execute o script "bash_scrip
 
 	git clone http://github.com/fnk0c/cangibrina.git
 	cd cangibrina
-	sudo sh bash_script.sh
+	sh linux_install.sh
 
 Uso:
 ====================================================================================================     
@@ -46,9 +46,10 @@ Outros exemplos:
 cangibrina -u facebook.com -w /root/diretorios.txt -t 10 -v  
 cangibrina -u facebook.com -v  
 cangibrina -u facebook.com -g -s face -v  
-cangibrina -u facebook.com -g -d 'inurl:login' -s face  
-cangibrina -u facebook.com -g -d 'inurl:login' -s face -n  
- 
+cangibrina -u facebook.com -g -d 'inurl:login' -s face     
+cangibrina -u facebook.com -g -d 'inurl:login' -s face -n     
+cangibrina -u facebook.com -v -n -a      
+
 ====================================================================================================
 Bugs Conhecidos: 
 Primeira execução costuma utilizar apenas um thread. Caso aconteça, basta fechar o terminal e
