@@ -44,16 +44,16 @@ Uso/Ajuda:
 
 	Comandos:
 
-	  -h	--help\t\tExibe esta ajuda e sai
-	  -u	--url\t\tDefine site alvo
-	  -w	--wordlist\tDefine wordlist (opcional)
-	  -v	--verbose\tHabilita modo verbose
-	  -t	--threads\tInforma número de processos a serem executados (opcional, default = 10)
-	  -g	--google\tBusca através dos motores Google e DuckDuckGo
-	  -d	--dork\t\tInforma dork de busca
-	  -s	--saida\t\tInforma nome do arquivo log gerado
-	  -n	--nmap\t\tUtliza o Nmap para scan de serviços
-	  -a	--user_agent\tAdiciona user-agent
+	  -h	--help		Exibe esta ajuda e sai
+	  -u	--url		Define site alvo
+	  -w	--wordlist	Define wordlist (opcional)
+	  -v	--verbose	Habilita modo verbose
+	  -t	--threads	Informa número de processos a serem executados (opcional, default = 10)
+	  -g	--google	Busca através dos motores Google e DuckDuckGo
+	  -d	--dork		Informa dork de busca
+	  -s	--saida		Informa nome do arquivo log gerado
+	  -n	--nmap		Utliza o Nmap para scan de serviços
+	  -a	--user_agent	Adiciona user-agent
 
 	===============================================================================
 
