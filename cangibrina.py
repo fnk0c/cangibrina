@@ -3,8 +3,8 @@
 
 
 __AUTOR__	= 'Fnkoc'
-__DATA__	= '31/08/14'
-__VERSAO__	= '1.7'
+__DATA__	= '03/11/14'
+__VERSAO__	= '0.8.1'
 
 '''Agradecimento especial ao Maximoz'''
 
@@ -57,10 +57,10 @@ def ajuda():
  | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
  | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
   \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-                   |___/                Beta - v0.8
+                   |___/              Beta - v0.8.1
   Dashboard Finder
 
-  Cangibrina 0.8 | coded by Fnkoc
+  Cangibrina 0.8.1 | coded by Fnkoc
 
 uso: cangibrina-0.8.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v -n -a
 
@@ -82,19 +82,19 @@ Comandos:
 
 Exemplos de uso:
 
-python cangibrina-0.8.py -u facebook.com -w /root/diretorios.txt -t 10 -v
+python cangibrina.py -u facebook.com -w /root/diretorios.txt -t 10 -v
 \tFoi utilizada uma wordlist personalizada, 10 threads, o modo verbose e o facebook.com como alvo
 
-python cangibrina-0.8.py -u facebook.com -v -s face_brute
+python cangibrina.py -u facebook.com -v -s face_brute
 \tFoi utilizada a wordlist e threads padrões. facebook.com como alvo, modo verbose e arquivo log gerado receberá o nome face_brute
 
-python cangibrina-0.8.py -u facebook.com -g -s face -v
+python cangibrina.py -u facebook.com -g -s face -v
 \tFoi utilizada a busca do painel através de requests e dos motores de busca, gerando um arquivo "face" com os resultados
 
-python cangibrina-0.8.py -u facebook.com -g -d 'inurl:login' -s face
+python cangibrina.py -u facebook.com -g -d 'inurl:login' -s face
 \tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, motores de busca, e dork personalizada.
 
-python cangibrina-0.8.py -u facebook.com -v -n -a
+python cangibrina.py -u facebook.com -v -n -a
 \tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose, user-agent e nmap para scan de portas.
 
 [IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
@@ -103,7 +103,7 @@ python cangibrina-0.8.py -u facebook.com -v -n -a
 
 '''====A.R.G.U.M.E.N.T.O.S========================================================'''
 
-parser = argparse.ArgumentParser(description = 'Cangibrina-1.6', add_help = False)
+parser = argparse.ArgumentParser(description = 'Cangibrina', add_help = False)
 parser.add_argument('-h', '--help', action = 'store_true',
 				help = 'Mostra esta ajuda e sai')
 parser.add_argument('-u', '--url',
@@ -145,8 +145,10 @@ def conexao(url, wl, verbose, threads, user_agent, saida):
 		
 		if args.user_agent:
 			br = mechanize.Browser()
+			user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
+			header = {'User-Agent' : user_agent}
 			br.set_handle_robots(False)						#Nega ser um bot
-			br.addheaders = [('User-agent', 'Mozilla/5.0')]	#Adiciona User-Agent
+			br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
 			conn = br.open(url)								#Abre url
 			real = conn.geturl()							#Verifica redirecionamento
 			conn = conn.code								#Verifica codigo HTTP
@@ -167,10 +169,13 @@ def conexao(url, wl, verbose, threads, user_agent, saida):
 		if real != url:
 			print red + ' [!] ' + default + 'Site está nos redirecionado para: \n'
 			print real
-			keep = raw_input('\nDeseja utilizar esta URL? (Y/n)\n >> ').lower()
+			keep = raw_input('\nDeseja deseja ser redirecionado? [Y]es [N]o [A]bort\n >> ').lower()
 			
 			if keep == 'n':
 				pass
+			elif keep == 'a':
+				print red + ' [!] ' + default + 'Execução abortada\n'
+				sys.exit()
 			else:
 				url = real
 		else:
