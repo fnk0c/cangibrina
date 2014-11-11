@@ -76,7 +76,6 @@ Comandos:
   -d\t--dork\t\tInforma dork de busca
   -s\t--saida\t\tInforma nome do arquivo log gerado
   -n\t--nmap\t\tUtliza o Nmap para scan de serviços
-  -a\t--user_agent\tAdiciona user-agent
 
 ===============================================================================
 
@@ -94,8 +93,8 @@ python cangibrina.py -u facebook.com -g -s face -v
 python cangibrina.py -u facebook.com -g -d 'inurl:login' -s face
 \tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, motores de busca, e dork personalizada.
 
-python cangibrina.py -u facebook.com -v -n -a
-\tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose, user-agent e nmap para scan de portas.
+python cangibrina.py -u facebook.com -v -n
+\tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose e nmap para scan de portas.
 
 [IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
 '''
@@ -122,15 +121,15 @@ parser.add_argument('-s', '--saida',
 				default = 'log_busca', help = 'Informa nome do arquivo log')
 parser.add_argument('-n', '--nmap',
 				action = 'store_true', help = 'nmap')
-parser.add_argument('-a', '--user_agent',
-				action = 'store_true', help = 'Habilita user agent')
+#parser.add_argument('-a', '--user_agent',
+#				action = 'store_true', help = 'Habilita user agent')
 
 args = parser.parse_args()
 
 
 '''====A.D.M.-.F.I.N.D.E.R========================================================'''
 
-def conexao(url, wl, verbose, threads, user_agent, saida):
+def conexao(url, wl, verbose, threads, saida):
 	try:
 		if url[:11] == 'http://www.':
 			url = url[11:]
@@ -141,27 +140,28 @@ def conexao(url, wl, verbose, threads, user_agent, saida):
 		url = 'http://www.%s/' % url
 		
 		
-		'''====A.G.E.N.T=========================================================='''
+		#'''====A.G.E.N.T=========================================================='''
 		
-		if args.user_agent:
-			br = mechanize.Browser()
-			user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
-			header = {'User-Agent' : user_agent}
-			br.set_handle_robots(False)						#Nega ser um bot
-			br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
-			conn = br.open(url)								#Abre url
-			real = conn.geturl()							#Verifica redirecionamento
-			conn = conn.code								#Verifica codigo HTTP
+		#if args.user_agent:
+		#	br = mechanize.Browser()
+		#	user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
+		#	header = {'User-Agent' : user_agent}
+		#	br.set_handle_robots(False)						#Nega ser um bot
+		#	br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
+		#	conn = br.open(url)								#Abre url
+		#	real = conn.geturl()							#Verifica redirecionamento
+		#	conn = conn.code								#Verifica codigo HTTP
 		
-		else:
-			conn = u.urlopen(url).getcode()					#Verifica codigo HTTP
-			real = u.urlopen(url).geturl()					#Verifica redirecionamento
+		#else:
+		conn = u.urlopen(url).getcode()					#Verifica codigo HTTP
+		real = u.urlopen(url).geturl()					#Verifica redirecionamento
 
 		
 		'''====S.T.A.T.U.S..&..R.E.D.I.R.E.C.T===================================='''
 		
 		if conn != 200:
 			print red + ' [!] ' + default + 'O site não pode ser alcançado'
+			print conn
 			sys.exit()
 		else:
 			print green + '\n [+] ' + default + 'Site está online\n Resposta: %s \n' % conn
@@ -355,4 +355,4 @@ if len(sys.argv) == 1:
 elif args.help:
 	ajuda()
 else:
-	conexao(args.url, args.wordlist, args.verbose, args.threads, args.user_agent, args.saida)
+	conexao(args.url, args.wordlist, args.verbose, args.threads, args.saida)
