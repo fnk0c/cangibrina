@@ -3,7 +3,7 @@
 	 | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
 	 | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
 	  \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-		               |___/                Beta - v0.8
+		               |___/                Beta - v0.8.1
 	  Dashboard Finder
 
 	  Cangibrina 0.8.1 | coded by Fnkoc           
@@ -53,7 +53,6 @@ Uso/Ajuda:
 	  -d	--dork		Informa dork de busca
 	  -s	--saida		Informa nome do arquivo log gerado
 	  -n	--nmap		Utliza o Nmap para scan de serviços
-	  -a	--user_agent	Adiciona user-agent
 
 	===============================================================================
 
@@ -71,7 +70,7 @@ Uso/Ajuda:
 	python cangibrina.py -u facebook.com -g -d 'inurl:login' -s face
 	Foi utilizado o facebook.com como alvo, wordlist e threads padrões, motores de busca, e dork personalizada.
 
-	python cangibrina.py -u facebook.com -v -n -a
+	python cangibrina.py -u facebook.com -v -n
 	Foi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose, user-agent e nmap para scan de portas.
 
 	[IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
