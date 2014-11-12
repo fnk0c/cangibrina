@@ -1,5 +1,14 @@
-cangibrina
-==========
+	   ____                  _ _          _             
+	  / ___|__ _ _ __   __ _(_) |__  _ __(_)_ __   __ _ 
+	 | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
+	 | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
+	  \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
+		               |___/                Beta - v0.8.1
+	  Dashboard Finder
+
+	  Cangibrina 0.8.1 | coded by Fnkoc
+	  
+====================================================================================================
 
 Dashboard Finder 
  
@@ -23,32 +32,50 @@ Windows:
 
 Instalação Linux:
 ====================================================================================================     
-Faça o download do programa, entre no diretório e execute o script "bash_script.sh"
+Faça o download do programa, entre no diretório e execute o script "linux_install.sh"
 
 	git clone http://github.com/fnk0c/cangibrina.git
 	cd cangibrina
 	sh linux_install.sh
 
-Uso:
+Uso/Ajuda:
 ====================================================================================================     
-cangibrina -u target.com -w /root/wordlist.txt -t 15 -v -g -d 'inurl:login' -s target_out -n 
+	uso: cangibrina.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v -n -a
 
--u > referente ao site alvo  
--w > referente a wordlist personalizada  
--t > referente ao número de processos (threads) criados  
--v > referente ao modo verbose  
--g > referente a busca do google  
--d > referente a dork (entre aspas simples)  
--s > referente ao arquivo gerado com os resultados do google  
--n > referente ao uso do nmap para scannear portas no servidor  
+	Comandos:
 
-Outros exemplos:      
-cangibrina -u facebook.com -w /root/diretorios.txt -t 10 -v  
-cangibrina -u facebook.com -v  
-cangibrina -u facebook.com -g -s face -v  
-cangibrina -u facebook.com -g -d 'inurl:login' -s face     
-cangibrina -u facebook.com -g -d 'inurl:login' -s face -n     
-cangibrina -u facebook.com -v -n -a      
+	  -h	--help		Exibe esta ajuda e sai
+	  -u	--url		Define site alvo
+	  -w	--wordlist	Define wordlist (opcional)
+	  -v	--verbose	Habilita modo verbose
+	  -t	--threads	Informa número de processos a serem executados (opcional, default = 10)
+	  -g	--google	Busca através dos motores Google e DuckDuckGo
+	  -d	--dork		Informa dork de busca
+	  -s	--saida		Informa nome do arquivo log gerado
+	  -n	--nmap		Utliza o Nmap para scan de serviços
+	  -a	--user_agent	Adiciona user-agent
+
+	===============================================================================
+
+	Exemplos de uso:
+
+	python cangibrina.py -u facebook.com -w /root/diretorios.txt -t 10 -v
+	Foi utilizada uma wordlist personalizada, 10 threads, o modo verbose e o facebook.com como alvo
+
+	python cangibrina.py -u facebook.com -v -s face_brute
+	Foi utilizada a wordlist e threads padrões. facebook.com como alvo, modo verbose e arquivo log gerado receberá o nome face_brute
+
+	python cangibrina.py -u facebook.com -g -s face -v
+	Foi utilizada a busca do painel através de requests e dos motores de busca, gerando um arquivo "face" com os resultados
+
+	python cangibrina.py -u facebook.com -g -d 'inurl:login' -s face
+	Foi utilizado o facebook.com como alvo, wordlist e threads padrões, motores de busca, e dork personalizada.
+
+	python cangibrina.py -u facebook.com -v -n -a
+	Foi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose, user-agent e nmap para scan de portas.
+
+	[IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
+     
 
 ====================================================================================================
 Bugs Conhecidos: 
