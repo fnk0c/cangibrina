@@ -1,9 +1,10 @@
 #!/usr/bin/python
 #coding=utf-8
 
+#Next step is add a proxy option
 
 __AUTOR__	= 'Fnkoc'
-__DATA__	= '03/11/14'
+__DATA__	= '11/11/14'
 __VERSAO__	= '0.8.1'
 
 '''Agradecimento especial ao Maximoz'''
@@ -76,6 +77,7 @@ Comandos:
   -d\t--dork\t\tInforma dork de busca
   -s\t--saida\t\tInforma nome do arquivo log gerado
   -n\t--nmap\t\tUtliza o Nmap para scan de serviços
+  -a\t--user_agent\tModifica User-Agent
 
 ===============================================================================
 
@@ -121,8 +123,8 @@ parser.add_argument('-s', '--saida',
 				default = 'log_busca', help = 'Informa nome do arquivo log')
 parser.add_argument('-n', '--nmap',
 				action = 'store_true', help = 'nmap')
-#parser.add_argument('-a', '--user_agent',
-#				action = 'store_true', help = 'Habilita user agent')
+parser.add_argument('-a', '--user_agent',
+				action = 'store_true', help = 'Habilita user agent')
 
 args = parser.parse_args()
 
@@ -140,21 +142,21 @@ def conexao(url, wl, verbose, threads, saida):
 		url = 'http://www.%s/' % url
 		
 		
-		#'''====A.G.E.N.T=========================================================='''
+		'''====A.G.E.N.T=========================================================='''
 		
-		#if args.user_agent:
-		#	br = mechanize.Browser()
-		#	user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
-		#	header = {'User-Agent' : user_agent}
-		#	br.set_handle_robots(False)						#Nega ser um bot
-		#	br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
-		#	conn = br.open(url)								#Abre url
-		#	real = conn.geturl()							#Verifica redirecionamento
-		#	conn = conn.code								#Verifica codigo HTTP
+		if args.user_agent:
+			br = mechanize.Browser()
+			user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
+			header = {'User-Agent' : user_agent}
+			br.set_handle_robots(False)						#Nega ser um bot
+			br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
+			conn = br.open(url)								#Abre url
+			real = conn.geturl()							#Verifica redirecionamento
+			conn = conn.code								#Verifica codigo HTTP
 		
-		#else:
-		conn = u.urlopen(url).getcode()					#Verifica codigo HTTP
-		real = u.urlopen(url).geturl()					#Verifica redirecionamento
+		else:
+			conn = u.urlopen(url).getcode()					#Verifica codigo HTTP
+			real = u.urlopen(url).geturl()					#Verifica redirecionamento
 
 		
 		'''====S.T.A.T.U.S..&..R.E.D.I.R.E.C.T===================================='''
@@ -221,7 +223,7 @@ def conexao(url, wl, verbose, threads, saida):
 				log.write(robots)
 			else:
 				print red + ' [-] ' + default + 'Robots.txt não está disponível'
-			print green + ' [+] ' + default + 'Arquivo log \"%s.txt\" em \"Cangibrina/src/Output\"\n' % url[11:-1]
+			print green + ' [+] ' + default + 'Arquivo log \"%s.txt\" em \"Cangibrina/src/Output\"\n' % log
 
 			diretorios.close()
 			if args.google:
@@ -243,12 +245,32 @@ def conexao(url, wl, verbose, threads, saida):
 					print final
 				else:
 					pass
-				conn = u.urlopen(final).getcode()
-				if conn == 200:
-					print green + ' [+] ' + default + 'Encontrado: %s' % final
-					log.write(final)
-				elif conn == 301:
-					print green + ' [+] ' + default + 'Redirecionado: %s' % final
+
+				try:
+					if args.user_agent:
+						br = mechanize.Browser()
+						user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
+						header = {'User-Agent' : user_agent}
+						br.set_handle_robots(False)						#Nega ser um bot
+						br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
+						conn = br.open(final).code						#Abre url
+
+					else:
+						conn = u.urlopen(final).getcode()
+						
+					if conn == 200:
+						print green + ' [+] ' + default + 'Encontrado: %s' % final
+						log.write(final)
+					elif conn == 301:
+						print green + ' [+] ' + default + 'Redirecionado: %s' % final
+					elif conn == 404:
+						print red + ' [-] ' + default + 'HTTP Error 404: Not Found'
+			
+				except Exception, e:
+					if args.verbose:
+						print red + ' [!] ' + default + str(e)
+					pass
+			
 			sys.exit()
 
 		if __name__ == '__main__':
