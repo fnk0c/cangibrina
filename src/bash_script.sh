@@ -7,6 +7,11 @@ then
 	
 fi
 
+if [ -e /opt/cangibrina ]
+then 
+	rm -rf /opt/cangibrina
+fi
+
 cd ..
 cd ..
 mv cangibrina /opt/
