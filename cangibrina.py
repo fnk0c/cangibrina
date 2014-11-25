@@ -1,21 +1,24 @@
 #!/usr/bin/python
 #coding=utf-8
 
-#Next step is add a proxy option
+#Nesta nova versão adicionei a opção de utilizar um servidor proxy HTTP para fazer as requisições
+#Testei através do Wireshark e me pareceu estar funcionando corretamente
+#Num futuro tentarei utilizar protocolo SOCKS, mas por hora somente HTTP
+#Mudei o número de threads a serem utilizados quando não especificado. De 10 para 7
 
 __AUTOR__	= 'Fnkoc'
-__DATA__	= '11/11/14'
-__VERSAO__	= '0.8.1'
+__DATA__	= '23/11/14'
+__VERSAO__	= '0.8.2'
 
 '''Agradecimento especial ao Maximoz'''
 
 import sys
 sys.path.append('src/thirdparty/beautifulsoup4-4.3.2/')		#Adiciona diretório para busca de bibliotecas/modulos
 from threading import Thread
-try:
-	import mechanize
-except:
-	print '''
+try:							#O motivo de ser necessária a instalação do mechanize é porque não consegui
+	import mechanize			#utlizar a biblioteca do mesmo modo que fiz com o BeautifulSoup. Se alguem souber
+except:							#o motivo, favor me avisar
+	print '''					
 	[!] Necessária a intalação do modulo mechanize.
 	
 	Debian:sudo apt-get install python-mechanize
@@ -24,7 +27,6 @@ except:
 '''
 	sys.exit()
 from bs4 import BeautifulSoup
-import datetime
 import argparse
 import threading
 import urllib as u
@@ -58,12 +60,12 @@ def ajuda():
  | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
  | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
   \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-                   |___/              Beta - v0.8.1
+                   |___/              Beta - v0.8.2
   Dashboard Finder
 
-  Cangibrina 0.8.1 | coded by Fnkoc
+  Cangibrina 0.8.2 | coded by Fnkoc
 
-uso: cangibrina-0.8.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v -n -a
+uso: cangibrina.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -p[PROXY] -v -n -a
 
 Comandos:
 
@@ -78,6 +80,7 @@ Comandos:
   -s\t--saida\t\tInforma nome do arquivo log gerado
   -n\t--nmap\t\tUtliza o Nmap para scan de serviços
   -a\t--user_agent\tModifica User-Agent
+  -p\t--proxy\t\tUtiliza servidor proxy
 
 ===============================================================================
 
@@ -98,8 +101,14 @@ python cangibrina.py -u facebook.com -g -d 'inurl:login' -s face
 python cangibrina.py -u facebook.com -v -n
 \tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, verbose e nmap para scan de portas.
 
-[IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
+python cangibrina.py -u facebook.com -a
+\tFoi utilizado o facebook.com como alvo, wordlist e threads padrões, e o argumento \"-a\" para modificar o user-agent
+
+python cangibrina.py -u facebook.com -p 187.25.2.485:8080
+\tFoi utilizado o facebook.com como alvo e um servidor proxy
 '''
+	print red + '[IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!\n\n' + default
+
 
 
 '''====A.R.G.U.M.E.N.T.O.S========================================================'''
@@ -109,11 +118,11 @@ parser.add_argument('-h', '--help', action = 'store_true',
 				help = 'Mostra esta ajuda e sai')
 parser.add_argument('-u', '--url',
 				help = 'Informa site alvo')
-parser.add_argument('-w', '--wordlist',default = 'default',
+parser.add_argument('-w', '--wordlist',
 				help = 'Informa wordlist a ser usada')
 parser.add_argument('-v', '--verbose',
 				action = 'store_true', help = 'Habilita modo verbose')
-parser.add_argument('-t', '--threads',default = 10, type = int,
+parser.add_argument('-t', '--threads',default = 7, type = int,
 				help = 'Informa número de processos a serem executados\n Default=10')
 parser.add_argument('-g', '--google', 
 				action = 'store_true', help = 'Busca de sites')
@@ -125,13 +134,15 @@ parser.add_argument('-n', '--nmap',
 				action = 'store_true', help = 'nmap')
 parser.add_argument('-a', '--user_agent',
 				action = 'store_true', help = 'Habilita user agent')
+parser.add_argument('-p', '--proxy',
+				help = 'Utiliza servidor proxy')
 
 args = parser.parse_args()
 
 
 '''====A.D.M.-.F.I.N.D.E.R========================================================'''
 
-def conexao(url, wl, verbose, threads, saida):
+def conexao(url, wl, verbose, threads, saida, user_agent):
 	try:
 		if url[:11] == 'http://www.':
 			url = url[11:]
@@ -141,37 +152,53 @@ def conexao(url, wl, verbose, threads, saida):
 			url = url[7:]
 		url = 'http://www.%s/' % url
 		
+		'''====P.R.O.X.Y=========================================================='''
+
+		if args.proxy:
+			proxies = {'http': 'http://' + args.proxy}		#Define endereço servidor proxy
+		else:
+			proxies = {}									#Para não utilizar proxy
 		
 		'''====A.G.E.N.T=========================================================='''
 		
 		if args.user_agent:
 			br = mechanize.Browser()
+			
+			if args.proxy:							#Se argumento proxy estiver sendo utilizado
+				br.set_proxies(proxies)				#Definir proxy
+			
 			user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
 			header = {'User-Agent' : user_agent}
 			br.set_handle_robots(False)						#Nega ser um bot
 			br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
-			conn = br.open(url)								#Abre url
+			conn = br.open(url)			#Abre url
 			real = conn.geturl()							#Verifica redirecionamento
 			conn = conn.code								#Verifica codigo HTTP
 		
 		else:
-			conn = u.urlopen(url).getcode()					#Verifica codigo HTTP
-			real = u.urlopen(url).geturl()					#Verifica redirecionamento
+			conn = u.urlopen(url, proxies=proxies).getcode()		#Verifica codigo HTTP
+			real = u.urlopen(url, proxies=proxies).geturl()			#Recebe a URL verdadeira
 
 		
 		'''====S.T.A.T.U.S..&..R.E.D.I.R.E.C.T===================================='''
 		
-		if conn != 200:
+		if conn != 200:															#Verifica se o site está acessivel
 			print red + ' [!] ' + default + 'O site não pode ser alcançado'
+			
+			if conn == 403:														#Caso de 403 ele retorna uma dica
+				print red + ' [!] ' + default + 'Permissão Negada (Forbidden). Tente trocar o User-Agent ("-a")'
+
 			print conn
 			sys.exit()
+			
 		else:
 			print green + '\n [+] ' + default + 'Site está online\n Resposta: %s \n' % conn
 
-		if real != url:
+		if real != url:										#Verifica se a URL especificada é a mesma que a recebida
 			print red + ' [!] ' + default + 'Site está nos redirecionado para: \n'
 			print real
-			keep = raw_input('\nDeseja deseja ser redirecionado? [Y]es [N]o [A]bort\n >> ').lower()
+			keep = raw_input('\nDeseja deseja ser redirecionado? [Y]es [N]o [A]bort\n >> ').lower() #"lower" serve para converter a string
+																						#de caps lock para caixa baixa ("A" ==> "a")
 			
 			if keep == 'n':
 				pass
@@ -183,19 +210,20 @@ def conexao(url, wl, verbose, threads, saida):
 		else:
 			pass
 			
-	except Exception, e:
+	except Exception, e:					#Except necessário pois o mechanize não sabe lidar com codigo 404. Ou eu não sei lidar com o mechanize
 		print red + ' [!] ' + default + str(e) + '\n'
 		sys.exit()
 		
 		
 	'''====W.O.R.D.L.I.S.T========================================================'''
 	try:
-		if wl == 'default':
-			os.chdir('Wordlist')
+		if args.wordlist:			#Caso seja específicada uma wordlist
+			diretorios = open((wl), 'r')
+	
+		else:
+			os.chdir('Wordlist')	#Caso NÃO sejá especificada uma wordlist será usada a padrão
 			diretorios = open('default', 'r')
 			os.chdir('..')
-		else:
-			diretorios = open((wl), 'r')
 			
 	except Exception, e:
 		print red + ' [!] ' + default + str(e) + '\n'
@@ -205,7 +233,7 @@ def conexao(url, wl, verbose, threads, saida):
 	try:	# Brute force
 		print green + '\n [+] ' + default + 'Testando...\n'
 		os.chdir('src')
-		os.chdir('Output')
+		os.chdir('Output')						#Selecionando diretório onde será criado o log
 		
 		if args.saida:
 			log = open(args.saida + '.txt', 'w')
@@ -213,10 +241,10 @@ def conexao(url, wl, verbose, threads, saida):
 			log = open('brute_cpanel.txt', 'w')
 
 		'''======================================================================='''
-		def robots():				# Checando Robots.txt
+		def robots():							# Checando Robots.txt
 			print yellow + ' [!] ' + default + 'Checando por Robots.txt'
 			robots = (url + 'robots.txt')
-			r_check = u.urlopen(robots).getcode()
+			r_check = u.urlopen(robots, proxies=proxies).getcode()
 
 			if r_check == 200:
 				print green + ' [+] ' + default + 'Robots.txt está disponível'
@@ -239,24 +267,29 @@ def conexao(url, wl, verbose, threads, saida):
 
 		'''======================================================================='''
 		def brute():
-			for ways in diretorios:
+			for ways in diretorios:				#Ssendo "ways" os diretórios contidos no txt e "diretorios" o arquivo txt
 				final = url + ways
+				
 				if args.verbose:
 					print final
 				else:
 					pass
 
-				try:
+				try:				#Por esta parte ser uma cópia de um trexo acima, não vejo necessidade de comentar
 					if args.user_agent:
 						br = mechanize.Browser()
+						
+						if args.proxy:
+							br.set_proxies(proxies)
+						
 						user_agent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0'
 						header = {'User-Agent' : user_agent}
-						br.set_handle_robots(False)						#Nega ser um bot
-						br.addheaders = [('User-agent', 'Firefox')]		#Adiciona User-Agent
-						conn = br.open(final).code						#Abre url
+						br.set_handle_robots(False)						
+						br.addheaders = [('User-agent', 'Firefox')]		
+						conn = br.open(final).code						
 
 					else:
-						conn = u.urlopen(final).getcode()
+						conn = u.urlopen(final, proxies=proxies).getcode()
 						
 					if conn == 200:
 						print green + ' [+] ' + default + 'Encontrado: %s' % final
@@ -264,7 +297,8 @@ def conexao(url, wl, verbose, threads, saida):
 					elif conn == 301:
 						print green + ' [+] ' + default + 'Redirecionado: %s' % final
 					elif conn == 404:
-						print red + ' [-] ' + default + 'HTTP Error 404: Not Found'
+						if args.verbose:
+							print red + ' [-] ' + default + 'HTTP Error 404: Not Found'
 			
 				except Exception, e:
 					if args.verbose:
@@ -274,13 +308,12 @@ def conexao(url, wl, verbose, threads, saida):
 			sys.exit()
 
 		if __name__ == '__main__':
-			time_started = datetime.datetime.now()
 			for t in range(args.threads):
 				Thread(target = brute).start()
 						
-			while 1==1:
-				if threading.active_count() == 1:
-					robots()
+			while 1==1:								#Durante a execução do programa é checado o número de threads
+				if threading.active_count() == 1:	#sendo executados. Quando for igual a um significa que o brute force 
+					robots()						#já foi concluido, podendo assim seguir para as proximas etapas
 				elif threading.active_count() > 1:
 					pass
 
@@ -299,7 +332,7 @@ def DuckDuckGo(query, saida):
 	if not args.dork:
 		query = 'site:' + args.url.replace('http://', '') + ' inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)'
 	else:
-		query = ''.join(query)							#Transforma lista query em string e 
+		query = ''.join(query)							#Transforma lista em string 
 		query = query.strip("'")						#Remove aspas simples
 	print yellow + '[DORK]' + default +' >> ' + query
 
@@ -309,7 +342,8 @@ def DuckDuckGo(query, saida):
 		html = u.urlopen(req).read()
 		soup = BeautifulSoup(html)
 
-		log = open(saida + '_duck.txt', 'w')
+		log = open(saida + '_duck.txt', 'w')			#A parte do for é basicamente analisar a estrutura do 
+														#site, para assim, saber quais serão as classes que lhe interessam
 		for results in soup.findAll('div', attrs={'class':'links_main links_deep'}):
 			for title in results.findAll('a', attrs={'class':'large'}):
 				t = title.text
@@ -365,16 +399,16 @@ def google(query, saida):
 
 '''====N.M.A.P===================================================================='''
 
-def nmap():
+def nmap():		#Talvez num futuro eu permita a execução de um comando personalizado
 	print green + '\n\t[+] ' + default + 'Iniciando Nmap...\n'
 	comando = 'sudo nmap -PN -sV -sS www.%s' %args.url.replace('http://', '').replace('www.', '')
 	print '\n', comando
 	os.system(comando)
 
 '''==============================================================================='''
-if len(sys.argv) == 1:
-	ajuda()
+if len(sys.argv) == 1:		#Caso o número de argumentos seja igual a 1, ou seja, apenas o nome do programa
+	ajuda()					#a ajuda será exibida
 elif args.help:
 	ajuda()
 else:
-	conexao(args.url, args.wordlist, args.verbose, args.threads, args.saida)
+	conexao(args.url, args.wordlist, args.verbose, args.threads, args.saida, args.user_agent)
