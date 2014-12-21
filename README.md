@@ -18,7 +18,7 @@ Dashboard Finder
 Cangibrina é uma ferramenta multiplataforma que visa a obtenção do painel de administração de sites 
 utilizando brute-force baseado e wordlist, google, nmap e robots.txt.
 
-Cangibrina is a multiplataform tool which aims to obtain the Dashboard of sites using brute-force 
+Cangibrina is a multi platform tool which aims to obtain the Dashboard of sites using brute-force 
 over wordlist, google, nmap, and robots.txt
 
 Requisitos/Requirements:  
@@ -27,14 +27,14 @@ Python 2.7
 mechanize    
 Nmap para o argumento -n    /	Nmap to use argument -n
 
-====================================================================================================
 Como instalar Mechanize/How to install Mechanize:     
+====================================================================================================
 Linux:     
-        Debian: sudo apt-get install python-mechanize     
-        Arch: sudo pacman -S python2-mechanize     
+	Debian: sudo apt-get install python-mechanize     
+	Arch: sudo pacman -S python2-mechanize     
 Windows:       
-        Download: https://pypi.python.org/pypi/mechanize/     
-        python setup.py install     
+	Download: https://pypi.python.org/pypi/mechanize/     
+	python setup.py install     
 
 Instalação Linux/ Linux Install:
 ====================================================================================================     
