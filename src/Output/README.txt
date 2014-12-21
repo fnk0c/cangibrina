@@ -1,1 +1,0 @@
-Nesta pasta se encontra os arquivos log gerados

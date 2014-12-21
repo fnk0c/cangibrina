@@ -1,69 +1,39 @@
 #!/usr/bin/python
 #coding=utf-8
 
-#Nesta nova versão adicionei a opção de utilizar um servidor proxy HTTP para fazer as requisições
-#Testei através do Wireshark e me pareceu estar funcionando corretamente
-#Num futuro tentarei utilizar protocolo SOCKS, mas por hora somente HTTP
-#Mudei o número de threads a serem utilizados quando não especificado. De 10 para 7
-
 __AUTOR__	= "Fnkoc"
-__DATA__	= "06/12/14"
-__VERSAO__	= "0.8.2"
+__DATA__	= "19/12/14"
+__VERSAO__	= "0.8.3"
 
 '''Agradecimento especial ao Maximoz'''
 
 import sys
-sys.path.append("src/thirdparty/beautifulsoup4-4.3.2/")		#Adiciona diretório para busca de bibliotecas/modulos
-from threading import Thread
-try:							#O motivo de ser necessária a instalação do mechanize é porque não consegui
-	import mechanize			#utlizar a biblioteca do mesmo modo que fiz com o BeautifulSoup. Se alguem souber
-except:							#o motivo, favor me avisar
-	print '''					
-	[!] install mechanize module is required
-	
-	Debian:sudo apt-get install python-mechanize
-	Arch:sudo pacman -S python2-mechanize
-	Windows: see README.md
-'''
-	sys.exit()
-from bs4 import BeautifulSoup
+sys.path.append("src/")
+import Connection
+import colors
 import argparse
-import threading
-import urllib as u
 import os
+import time
+import Nmap
+import search
+import threading
+from threading import Thread
 
-'''==============================================================================='''
-#Defining term colors
-if sys.platform == "win32":
-	red = ""
-	green = ""
-	yellow = ""
-	default = ""
-else:
-	red = "\033[31m"
-	green = "\033[32m"
-	yellow = "\033[33m"
-	default = "\033[00m"
-
-'''==============================================================================='''
-def limpar():						# Limpar Tela
-	if sys.platform == "win32":		#Se plataforma Windows
-		os.system("cls")			#Execute o comando "cls"
-	else:							#Outras plataformas
-		os.system("clear")			#Execute o comando "clear"
 
 '''==============================================================================='''
 def ajuda():
-	limpar()
-	print '''   ____                  _ _          _             
+
+	import Clear
+
+	print("""   ____                  _ _          _             
   / ___|__ _ _ __   __ _(_) |__  _ __(_)_ __   __ _ 
  | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
  | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
   \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-                   |___/              Beta - v0.8.2
+                   |___/              Beta - v0.8.3
   Dashboard Finder
 
-  Cangibrina 0.8.2 | coded by Fnkoc
+  Cangibrina 0.8.3 | coded by Fnkoc
 
 usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] -v -n -a
 
@@ -101,9 +71,9 @@ python cangibrina.py -u facebook.com -v -n
 python cangibrina.py -u facebook.com -a
 
 python cangibrina.py -u facebook.com -p 187.25.2.485:8080
-'''
-	print red + "[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !\n"+ default
-	print red + "[Example] 'inurl:login.php'\n\n" + default
+""")
+	print(colors.red + "[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !\n"+ colors.default)
+	print(colors.red + "[Example] 'inurl:login.php'\n\n" + colors.default)
 
 
 '''====A.R.G.U.M.E.N.T.O.S========================================================'''
@@ -131,280 +101,119 @@ parser.add_argument("-a", "--user_agent",
 				action = "store_true", help = "Habilita user agent")
 parser.add_argument("-p", "--proxy",
 				help = "Utiliza servidor proxy")
+#parser.add_argument("--tor", action = "store_true",
+#				help = "Usa tor para proxy")
 
 args = parser.parse_args()
 
+"""====F.U.N.C.O.E.S=========================================================="""
 
-'''====A.D.M.-.F.I.N.D.E.R========================================================'''
+"""====W.O.R.D.L.I.S.T========================================================"""
 
-def conexao(url, wl, verbose, threads, saida, user_agent):
+def read_wl(wordlist):
+
+	def create_lst():
+		global lst
+		lst = []
+
+		for i in diretorios:
+			lst.append(i)
 	try:
-		if url[:11] == "http://www.":
-			url = url[11:]
-		elif url[:4] == "www.":
-			url = url[4:]
-		elif url[:7] == "http://":
-			url = url[7:]
-		url = "http://www.%s/" % url
-		
-		'''====P.R.O.X.Y=========================================================='''
-
-		if args.proxy:
-			proxies = {"http": "http://" + args.proxy}		#Define endereço servidor proxy
-		else:
-			proxies = {}									#Para não utilizar proxy
-		
-		'''====A.G.E.N.T=========================================================='''
-		
-		if args.user_agent:
-			br = mechanize.Browser()
-			
-			if args.proxy:							#Se argumento proxy estiver sendo utilizado
-				br.set_proxies(proxies)				#Definir proxy
-			
-			user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0"
-			header = {"User-Agent" : user_agent}
-			br.set_handle_robots(False)						#Nega ser um bot
-			br.addheaders = [("User-agent", "Firefox")]		#Adiciona User-Agent
-			conn = br.open(url)								#Abre url
-			real = conn.geturl()							#Verifica redirecionamento
-			conn = conn.code								#Verifica codigo HTTP
-		
-		else:
-			conn = u.urlopen(url, proxies=proxies).getcode()		#Verifica codigo HTTP
-			real = u.urlopen(url, proxies=proxies).geturl()			#Recebe a URL verdadeira
-
-		
-		'''====S.T.A.T.U.S..&..R.E.D.I.R.E.C.T===================================='''
-		
-		if conn != 200:															#Verifica se o site está acessivel
-			print red + " [!] " + default + "Site can\'t be reached\n Code: %s" % conn
-			
-			if conn == 403:														#Caso de 403 ele retorna uma dica
-				print red + " [!] " + default + "Forbidden. Try to change you User-Agent (\"-a\")"
-
-			print conn
-			sys.exit()
+		if wordlist == None:		#Caso seja específicada uma wordlist
+			os.chdir("Wordlists")	#Caso NÃO sejá especificada uma wordlist será usada a padrão
+			diretorios = open("default", "r").readlines()
+			create_lst()
 			
 		else:
-			print green + "\n [+] " + default + "Site is up\n Code: %s \n" % conn
-
-		if real != url:										#Verifica se a URL especificada é a mesma que a recebida
-			print red + " [!] " + default + "Site is redirecting us to: \n"
-			print real
-			keep = raw_input("\nWould you like to follow the redirection?? [Y]es [N]o [A]bort\n >> ").lower() #"lower" serve para converter a string
-																						#de caps lock para caixa baixa ("A" ==> "a")
+			diretorios = open(wordlist, "r").readlines()
+			create_lst()
 			
-			if keep == "n":
-				pass
-			elif keep == "a":
-				print red + " [!] " + default + "Aborted\n"
-				sys.exit()
-			else:
-				url = real
+	except Exception, e:
+		print colors.red + " [!] " + colors.default + str(e) + "\n"
+		sys.exit()
+
+"""====B.R.U.T.E.-.F.O.R.C.E=================================================="""
+
+def brute_force(lst):
+	for ways in lst:
+		final = url + ways
+		lst.remove(ways)
+		Connection.tester(final, proxy, user_agent, verbose, saida)
+
+		if verbose:
+			print final
 		else:
 			pass
-			
-	except Exception, e:					#Except necessário pois o mechanize não sabe lidar com codigo 404. Ou eu não sei lidar com o mechanize
-		print red + " [!] " + default + str(e) + "\n"
-		sys.exit()
-		
-		
-	'''====W.O.R.D.L.I.S.T========================================================'''
-	try:
-		if args.wordlist:			#Caso seja específicada uma wordlist
-			diretorios = open((wl), "r")
 	
-		else:
-			os.chdir("Wordlist")	#Caso NÃO sejá especificada uma wordlist será usada a padrão
-			diretorios = open("default", "r")
-			os.chdir("..")
-			
-	except Exception, e:
-		print red + " [!] " + default + str(e) + "\n"
-		sys.exit()
+	sys.exit()
 
-	'''==========================================================================='''
-	try:	# Brute force
-		print green + "\n [+] " + default + "Testing...\n"
-		os.chdir("src")
-		os.chdir("Output")						#Selecionando diretório onde será criado o log
-		
-		if args.saida:
-			log = open(args.saida + ".txt", "w")
-		else:
-			log = open("brute_cpanel.txt", "w")
+"""====P.L.U.S================================================================"""
+	
+def plus():
+	print colors.green + " [+] " + colors.default + "Checking for Robots.txt"
+	robots = url + "robots.txt"	
+	print robots
+	Connection.tester(robots, proxy, user_agent, verbose, saida)
 
-		'''======================================================================='''
-		def robots():							# Checando Robots.txt
-			print yellow + " [!] " + default + "Checking for Robots.txt"
-			robots = (url + "robots.txt")
-			r_check = u.urlopen(robots, proxies=proxies).getcode()
-
-			if r_check == 200:
-				print green + " [+] " + default + "Robots.txt is available"
-				log.write(robots)
-			else:
-				print red + " [-] " + default + "Robots.txt is NOT available"
-			print green + " [+] " + default + "Log file \"%s.txt\" at \"Cangibrina/src/Output\"\n" % log
-
-			diretorios.close()
-			if args.google:
-				DuckDuckGo(args.dork, args.saida)
-				google(args.dork, args.saida)
-			else:
-				pass
-			if args.nmap:
-				nmap()
-			else:
-				pass
-			sys.exit()
-
-		'''======================================================================='''
-		def brute():
-			for ways in diretorios:				#Sendo "ways" os diretórios contidos no txt e "diretorios" o arquivo txt
-				final = url + ways
-				
-				if args.verbose:
-					print final
-				else:
-					pass
-
-				try:				#Por esta parte ser uma cópia de um trexo acima, não vejo necessidade de comentar
-					if args.user_agent:
-						br = mechanize.Browser()
-						
-						if args.proxy:
-							br.set_proxies(proxies)
-
-						user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0"
-						header = {"User-Agent" : user_agent}
-						br.set_handle_robots(False)						
-						br.addheaders = [("User-agent", "Firefox")]		
-						conn = br.open(final).code						
-
-					else:
-						conn = u.urlopen(final, proxies=proxies).getcode()
-
-					if conn == 200:
-						print green + " [+] " + default + "Found: %s" % final
-						log.write(final)
-					elif conn == 301:
-						print green + " [+] " + default + "Redirecting: %s" % final
-					elif conn == 404:
-						if args.verbose:
-							print red + " [-] " + default + "HTTP Error 404: Not Found"
-			
-				except Exception, e:
-					if args.verbose:
-						print red + " [!] " + default + str(e)
-					pass
-			
-			sys.exit()
-
-		if __name__ == "__main__":
-			for t in range(args.threads):
-				Thread(target = brute).start()
-						
-			while 1==1:								#Durante a execução do programa é checado o número de threads
-				if threading.active_count() == 1:	#sendo executados. Quando for igual a um significa que o brute force 
-					robots()						#já foi concluido, podendo assim seguir para as proximas etapas
-				elif threading.active_count() > 1:
-					pass
-
-	except Exception, e:
-		print red + "\n [!] " + default + str(e) + "\n"
-		sys.exit()
-	except KeyboardInterrupt:
-		print red + "\n [!] " + default + "You interrupt the program\n"
-		sys.exit()
-
-
-'''====D.U.C.K.D.U.C.K.G.O========================================================'''
-
-def DuckDuckGo(query, saida):
-	print green + "\n\t[!] " + default + "Searching on DuckDuckGo...\n"
-	if not args.dork:
-		query = "site:" + args.url.replace("http://", "") + " inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)"
-
+	if google:
+		search.google(dork, saida, url)
+		search.DuckDuckGo(dork, saida, url)
 	else:
-		query = "".join(query)							#Transforma lista em string 
-		query = query.strip("'")						#Remove aspas simples
-	print yellow + "[DORK]" + default +" >> " + query
-
-	try:
-		query = query.replace(" ", "+")					#Substitui espaços por "+"
-		req = "http://duckduckgo.com/html/?q=%s" % query
-		html = u.urlopen(req).read()
-		soup = BeautifulSoup(html)
-
-		log = open(saida + "_duck.txt", "w")			#A parte do for é basicamente analisar a estrutura do 
-														#site, para assim, saber quais serão as classes que lhe interessam
-		for results in soup.findAll("div", attrs={"class":"links_main links_deep"}):
-			for title in results.findAll("a", attrs={"class":"large"}):
-				t = title.text
-				t = t.title()
-			for link in results.findAll("a", attrs={"class":"large"}):
-				l = link.get("href")
-				print t
-				print l + "\n"
-				log.write(str(l) + "\n")
-	except:
 		pass
 
-	print green + "\n [+] " + default + "Log file has been generated"
-	print green + " [+] " + default + "Log file at \"Cangibrina/src/Output\"\n"
-
-
-'''====G.O.O.G.L.E================================================================'''
-
-def google(query, saida):
-	print green + "\n\t[!] " + default + "Searching on Google...\n"
-	if not args.dork:
-		query = "site:" + args.url.replace("http://", "") + " inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)"
+	if nmap:
+		Nmap.run(url)
 	else:
-		query = "".join(query)							#Transforma lista query em string e 
-		query = query.strip("'")						#Remove aspas simples
-	print yellow + "[DORK]" + default +" >> " + query
-
-	try:
-		query = query.replace(" ", "+")					#Substitui espaços por "+"
-		req = "https://www.google.com.br/search?q=%s&num=50&start=0" % query
-		br = mechanize.Browser()
-		br.set_handle_robots(False)						#Nega ser um bot
-		br.addheaders = [("User-agent", "chrome")]		#Adiciona User-Agent
-		html = br.open(req).read()						#Puxa código HTML da página 
-		soup = BeautifulSoup(html)
-
-		log = open(saida + "_google.txt", "w")
-		for results in soup.findAll(attrs={"class":"g"}):	#Abra "Inspecionar elemento" em seu navegador para compreender
-			for title in results.findAll("h3", attrs={"class":"r"}):
-				t = title.text
-				t = t.title()
-			for link in results.findAll(attrs={"class":"s"}):
-				l = link.cite.text
-				print t
-				print l + '\n'
-				log.write(str(l) + '\n')
-	except:
 		pass
 
-	print green + " [+] " + default + "Log file has been generated"
-	print green + ' [+] ' + default + 'Log file at \"Cangibrina/src/Output\"\n'
+	"""====R.E.S.U.L.T========================================================"""
+	print colors.red + "\n" + ("-"*80) + colors.default
+	print colors.green + " [+] " + colors.default + "[Results]\n"
+	Connection.result()
+	print colors.red + ("-"*80) + "\n" + colors.default
+	
+	sys.exit()
 
+"""====M.A.I.N================================================================"""
 
-'''====N.M.A.P===================================================================='''
-
-def nmap():		#Talvez num futuro eu permita a execução de um comando personalizado
-	print green + "\n\t[+] " + default + "Starting Nmap...\n"
-	comando = "sudo nmap -PN -sV -sS www.%s" %args.url.replace("http://", "").replace("www.", "")
-	print "\n", comando
-	os.system(comando)
-
-'''==============================================================================='''
-if len(sys.argv) == 1:		#Caso o número de argumentos seja igual a 1, ou seja, apenas o nome do programa
-	ajuda()					#a ajuda será exibida
-elif args.help:
+if len(sys.argv) == 1:
 	ajuda()
+
 else:
-	conexao(args.url, args.wordlist, args.verbose, args.threads, args.saida, args.user_agent)
+	url = args.url
+	proxy = args.proxy
+	user_agent = args.user_agent
+	saida = args.saida
+	threads = args.threads
+	verbose = args.verbose
+	wordlist = args.wordlist
+	google = args.google
+	dork = args.dork
+	nmap = args.nmap
+#	tor = args.tor
+
+	"""====A.R.R.U.M.A.-.U.R.L================================================"""
+
+	if url[:11] == "http://www.":
+		url = url[11:]
+	elif url[:4] == "www.":
+		url = url[4:]
+	elif url[:7] == "http://":
+		url = url[7:]
+	
+	url = "http://www.%s/" % url
+	
+	Connection.redirect_tester(url, proxy, user_agent, verbose)
+	read_wl(wordlist)
+	print colors.green + "\n [+] " + colors.default + "Testing..."
+
+	if __name__ == "__main__":
+		for t in range(args.threads):							  # For se refere ao número de processos que será criado
+			Thread(target = (brute_force), args = (lst,)).start() #A segunda virgula é para transformar os args em tupla
+			time.sleep(1.2)										  # Caso não coloque o sleep os processos irão se sobrepor
+						
+		while 1==1:								#Durante a execução do programa é checado o número de threads
+			if threading.active_count() == 1:	#sendo executados. Quando for igual a um significa que o brute force 
+				plus()							#já foi concluido, podendo assim seguir para as proximas etapas
+			elif threading.active_count() > 1:
+				pass
