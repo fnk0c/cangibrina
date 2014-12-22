@@ -12,7 +12,16 @@
 import sys
 #sys.path.append("src/thirdparty/SocksiPy/")
 #import socks
-import mechanize
+try:
+	import mechanize
+except:
+	print"""
+ [!] Please install Mechanize!
+
+ Debian/Ubuntu => apt-get install python-mechanize
+ Arch/Manjaro => pacman -S python2-mechanize
+ Windows => see READEME.md"""
+
 import urllib as u
 import colors
 
@@ -117,6 +126,7 @@ def tester(url, proxy, user_agent, verbose, saida):
 		if conn == 200:
 			print(colors.green + " [+] " + colors.default + "Found: %s | %s |") % (url, conn)
 			log.append(url)
+			log.append(conn)
 
 		elif conn == 301:
 			print(colors.green + " [+] " + colors.default + "Redirecting: %s | %s |") % (url, conn)
@@ -130,6 +140,7 @@ def tester(url, proxy, user_agent, verbose, saida):
 				print(colors.red + " [-] " + colors.default + "HTTP Error 404: Not Found")
 
 		else:
+			print(colors.red + " [!] " + colors.default + str(url))
 			print("Response Code: %s") % conn
 
 	except Exception, e:
