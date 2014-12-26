@@ -126,9 +126,10 @@ Ajuda/help:
 		[Example] 'inurl:login.php'
 
 
+Bugs: 
 ====================================================================================================
-Bugs Conhecidos/Known Bugs: 
-Primeira execução costuma utilizar apenas um thread. Caso aconteça, basta fechar o terminal e
-reiniciar a execução do Cangibrina.
+Se achar algum bug, favor me avisar:
+If you found any bug, please notify me:
 
-First run usually use just one thread. If it happen, just close the terminal and re-execute Cangibrina
+fnkoc@bol.com.br
+fb.com/fnkoc.a
