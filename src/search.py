@@ -6,6 +6,8 @@ sys.path.append("src/thirdparty/beautifulsoup4-4.3.2/")
 from bs4 import BeautifulSoup
 import mechanize
 import colors
+import urllib as u
+import os
 
 '''====D.U.C.K.D.U.C.K.G.O========================================================'''
 
@@ -39,8 +41,9 @@ def DuckDuckGo(query, saida, url):
 	except:
 		pass
 
+	log.close()
 	print colors.green + "\n [+] " + colors.default + "Log file has been generated"
-	print colors.green + " [+] " + colors.default + "Log file at \"Cangibrina/src/Output\"\n"
+	print colors.green + " [+] " + colors.default + "Log file at \"Cangibrina/output\"\n"
 
 
 '''====G.O.O.G.L.E================================================================'''
@@ -78,5 +81,6 @@ def google(query, saida, url):
 	except:
 		pass
 
+	log.close()
 	print colors.green + " [+] " + colors.default + "Log file has been generated"
-	print colors.green + ' [+] ' + colors.default + 'Log file at \"Cangibrina/src/Output\"\n'
+	print colors.green + ' [+] ' + colors.default + 'Log file at \"Cangibrina/output\"\n'
