@@ -155,7 +155,6 @@ def plus():
 	print robots
 	Connection.tester(robots, proxy, user_agent, verbose, saida)
 
-	os.chdir("..")
 	os.chdir("output")
 	if google:
 		search.google(dork, saida, url)
