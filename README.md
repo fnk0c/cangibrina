@@ -131,5 +131,5 @@ Bugs:
 Se achar algum bug, favor me avisar:
 If you found any bug, please notify me:
 
-fnkoc@bol.com.br
+franco.c.colombino@gmail.com      
 fb.com/fnkoc.a
