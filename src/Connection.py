@@ -6,8 +6,10 @@
 ################################
 #A gambiarra em questão é o fato de eu ter dado ctrl + c ctrl + v
 #do código inteiro por causa de duas linhas.
-#linha  45 e 50, linhas responsáveis por identificar o redirecionamento
+#linha  47 e 52, linhas responsáveis por identificar o redirecionamento
 #Caso haja redirecionamento vá para a linha 67
+
+__AUTOR__	= "Fnkoc"
 
 import sys
 #sys.path.append("src/thirdparty/SocksiPy/")

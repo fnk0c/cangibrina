@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #coding=utf-8
 
+__AUTOR__	= "Fnkoc"
+
 import sys
 sys.path.append("src/thirdparty/beautifulsoup4-4.3.2/")
 from bs4 import BeautifulSoup

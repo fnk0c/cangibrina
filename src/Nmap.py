@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #coding=utf-8
 
+__AUTOR__	= "Fnkoc"
+
 import os
 import colors
 

@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+__AUTOR__	= "Fnkoc"
+
 import sys
 import os
 
