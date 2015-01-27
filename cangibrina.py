@@ -51,6 +51,7 @@ Arguments:
   -n\t--nmap\t\tUses Nmap to check for ports and services
   -a\t--user_agent\tChange User-Agent
   -p\t--proxy\t\tUse proxy server (ONLY HTTP)
+    \t--update\tUpdate tool
 
 ===============================================================================
 
@@ -101,6 +102,8 @@ parser.add_argument("-a", "--user_agent",
 				action = "store_true", help = "Habilita user agent")
 parser.add_argument("-p", "--proxy",
 				help = "Utiliza servidor proxy")
+parser.add_argument("--update",
+				action = "store_true", help = "Faz Update da tool")
 #parser.add_argument("--tor", action = "store_true",
 #				help = "Usa tor para proxy")
 
@@ -155,6 +158,8 @@ def plus():
 	print robots
 	Connection.tester(robots, proxy, user_agent, verbose, saida)
 
+	os.system("pwd")
+	os.chdir("..")
 	os.chdir("output")
 	if google:
 		search.google(dork, saida, url)
@@ -191,9 +196,16 @@ else:
 	google = args.google
 	dork = args.dork
 	nmap = args.nmap
+	update = args.update
 #	tor = args.tor
 
 	"""====A.R.R.U.M.A.-.U.R.L================================================"""
+	
+	if update:
+		os.system("git fetch && git pull")
+		sys.exit()
+	else:
+		pass
 
 	if url[:11] == "http://www.":
 		url = url[11:]
