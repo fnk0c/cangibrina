@@ -95,7 +95,7 @@ def redirect_tester(url, proxy, user_agent, verbose):
 		
 		if verbose:
 			print(colors.red + " [!] " + colors.default + str(e))
-		pass
+		sys.exit()
 
 
 def tester(url, proxy, user_agent, verbose, saida):
