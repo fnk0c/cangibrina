@@ -46,6 +46,10 @@ Do the download, enter the directory and run the script "linux_install.sh"
 	cd cangibrina
 	sh linux_install.sh
 
+Video Tutorial
+==============
+https://www.youtube.com/watch?v=XEOjA3DUTNA
+
 Ajuda/help:
 ====================================================================================================     
 [Versão em Português]
