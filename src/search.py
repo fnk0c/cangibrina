@@ -14,14 +14,14 @@ import os
 '''====D.U.C.K.D.U.C.K.G.O========================================================'''
 
 def DuckDuckGo(query, saida, url):
-	print colors.green + "\n\t[!] " + colors.default + "Searching on DuckDuckGo...\n"
+	print (colors.green + "\n\t[!] " + colors.default + "Searching on DuckDuckGo...\n")
 	if query == None:
 		query = "site:" + url.replace("http://", "") + " inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)"
 
 	else:
 		query = "".join(query)							#Transforma lista em string 
 		query = query.strip("'")						#Remove aspas simples
-	print colors.yellow + "[DORK]" + colors.default +" >> " + query
+	print (colors.yellow + "[DORK]" + colors.default +" >> " + query)
 
 	try:
 		query = query.replace(" ", "+")					#Substitui espaços por "+"
@@ -37,21 +37,21 @@ def DuckDuckGo(query, saida, url):
 				t = t.title()
 			for link in results.findAll("a", attrs={"class":"large"}):
 				l = link.get("href")
-				print t
-				print l + "\n"
+				print (t)
+				print (l + "\n")
 				log.write(str(l) + "\n")
 	except:
 		pass
 
 	log.close()
-	print colors.green + "\n [+] " + colors.default + "Log file has been generated"
-	print colors.green + " [+] " + colors.default + "Log file at \"Cangibrina/output\"\n"
+	print (colors.green + "\n [+] " + colors.default + "Log file has been generated")
+	print (colors.green + " [+] " + colors.default + "Log file at \"Cangibrina/output\"\n")
 
 
 '''====G.O.O.G.L.E================================================================'''
 
 def google(query, saida, url):
-	print colors.green + "\n\t[!] " + colors.default + "Searching on Google...\n"
+	print (colors.green + "\n\t[!] " + colors.default + "Searching on Google...\n")
 
 	if query == None:
 		query = "site:" + url.replace("http://", "") + " inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)"
@@ -59,7 +59,7 @@ def google(query, saida, url):
 		query = "".join(query)							#Transforma lista query em string e 
 		query = query.strip("'")						#Remove aspas simples
 
-	print colors.yellow + "[DORK]" + colors.default +" >> " + query
+	print (colors.yellow + "[DORK]" + colors.default +" >> " + query)
 
 	try:
 		query = query.replace(" ", "+")					#Substitui espaços por "+"
@@ -77,12 +77,12 @@ def google(query, saida, url):
 				t = t.title()
 			for link in results.findAll(attrs={"class":"s"}):
 				l = link.cite.text
-				print t
-				print l + '\n'
+				print (t)
+				print (l + '\n')
 				log.write(str(l) + '\n')
 	except:
 		pass
 
 	log.close()
-	print colors.green + " [+] " + colors.default + "Log file has been generated"
-	print colors.green + ' [+] ' + colors.default + 'Log file at \"Cangibrina/output\"\n'
+	print (colors.green + " [+] " + colors.default + "Log file has been generated")
+	print (colors.green + ' [+] ' + colors.default + 'Log file at \"Cangibrina/output\"\n')

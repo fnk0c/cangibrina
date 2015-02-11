@@ -17,12 +17,12 @@ import sys
 try:
 	import mechanize
 except:
-	print"""
+	print("""
  [!] Please install Mechanize!
 
  Debian/Ubuntu => apt-get install python-mechanize
  Arch/Manjaro => pacman -S python2-mechanize
- Windows => see READEME.md"""
+ Windows => see READEME.md""")
 
 import urllib as u
 import colors
@@ -90,8 +90,8 @@ def redirect_tester(url, proxy, user_agent, verbose):
 		else:
 			pass
 
-	except Exception, e:
-		print e
+	except Exception as e:
+		print (str(e))
 		
 		if verbose:
 			print(colors.red + " [!] " + colors.default + str(e))
@@ -111,7 +111,7 @@ def tester(url, proxy, user_agent, verbose, saida):
 	try:				
 		if user_agent:
 			br = mechanize.Browser()
-			
+
 			if proxy:									#Se argumento proxy estiver sendo utilizado
 				br.set_proxies(proxies)					#Definir proxy
 			
@@ -119,6 +119,8 @@ def tester(url, proxy, user_agent, verbose, saida):
 			header = {"User-Agent" : UserAgent}
 			br.set_handle_robots(False)					#Nega ser um bot
 			br.addheaders = [("User-agent", "Firefox")]	#Adiciona User-Agent
+
+			
 			conn = br.open(url)							#Abre url
 			conn = conn.code							#Verifica codigo HTTP			
 
@@ -145,12 +147,12 @@ def tester(url, proxy, user_agent, verbose, saida):
 			print(colors.red + " [!] " + colors.default + str(url))
 			print("Response Code: %s") % conn
 
-	except Exception, e:
-		print e
+	except Exception as e:
+		print (str(e))
 		if verbose:
 			print(colors.red + " [!] " + colors.default + str(e))
 		pass
 
 def result():
 	for l in log:
-		print colors.green + " [+] " + colors.default + str(l)
+		print (colors.green + " [+] " + colors.default + str(l))

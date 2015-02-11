@@ -8,9 +8,9 @@ import colors
 
 def run(url):
 	try:
-		print colors.green + "\n\t[+] " + colors.default + "Starting Nmap...\n"
+		print (colors.green + "\n\t[+] " + colors.default + "Starting Nmap...\n")
 		comando = "sudo nmap -PN -sV -sS www.%s" % url.replace("http://", "").replace("www.", "").replace("/", "")
-		print "\n", comando
+		print ("\n", comando)
 		os.system(comando)
-	except Exception, e:
-		print colors.red + " [!] " + colors.default + str(e)
+	except Exception as e:
+		print (colors.red + " [!] " + colors.default + str(e))

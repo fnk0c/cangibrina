@@ -43,6 +43,7 @@ Arguments:
   -u\t--url\t\tDefine target site
   -w\t--wordlist\tDefine wordlist (optional)
   -v\t--verbose\tEnable verbose mode
+  -T\t--tor\tEnable TOR mode
   -t\t--threads\tTells the number of process to be used
 \t\t\t(optional, default = 7)
   -g\t--google\tSearch through Google e DuckDuckGo engine
@@ -88,6 +89,8 @@ parser.add_argument("-w", "--wordlist",
 				help = "Informa wordlist a ser usada")
 parser.add_argument("-v", "--verbose",
 				action = "store_true", help = "Habilita modo verbose")
+parser.add_argument("-T", "--tor",
+				action = "store_true", help = "Habilita modo verbose")
 parser.add_argument("-t", "--threads",default = 7, type = int,
 				help = "Informa número de processos a serem executados\n Default=10")
 parser.add_argument("-g", "--google", 
@@ -131,20 +134,43 @@ def read_wl(wordlist):
 			diretorios = open(wordlist, "r").readlines()
 			create_lst()
 			
-	except Exception, e:
-		print colors.red + " [!] " + colors.default + str(e) + "\n"
+	except Exception as e:
+		print (colors.red + " [!] " + colors.default + str(e) + "\n")
 		sys.exit()
 
 """====B.R.U.T.E.-.F.O.R.C.E=================================================="""
+def renew_tor():
+	import socket
+
+	s = socket.socket()
+	s.connect(('localhost', 9051))
+
+	s.send('AUTHENTICATE "{0}"\r\n'.format("123"))
+	resp = s.recv(1024)
+
+	if resp.startswith('250'):
+		s.send("signal NEWNYM\r\n")
+
+		resp = s.recv(1024)
+
+		if resp.startswith('250'):
+			print ("TOR Identity Renewed")
+		else:
+			print ("response 2: "+resp)
+	else:
+		print ("response 1: "+resp)
+
+
 
 def brute_force(lst):
 	for ways in lst:
 		final = url + ways
 		lst.remove(ways)
+		
 		Connection.tester(final, proxy, user_agent, verbose, saida)
 
 		if verbose:
-			print final
+			print (final)
 		else:
 			pass
 	
@@ -153,9 +179,9 @@ def brute_force(lst):
 """====P.L.U.S================================================================"""
 	
 def plus():
-	print colors.green + " [+] " + colors.default + "Checking for Robots.txt"
+	print (colors.green + " [+] " + colors.default + "Checking for Robots.txt")
 	robots = url + "robots.txt"	
-	print robots
+	print (robots)
 	Connection.tester(robots, proxy, user_agent, verbose, saida)
 
 	os.system("pwd")
@@ -173,10 +199,10 @@ def plus():
 		pass
 
 	"""====R.E.S.U.L.T========================================================"""
-	print colors.red + "\n" + ("-"*80) + colors.default
-	print colors.green + " [+] " + colors.default + "[Results]\n"
+	print (colors.red + "\n" + ("-"*80) + colors.default)
+	print (colors.green + " [+] " + colors.default + "[Results]\n")
 	Connection.result()
-	print colors.red + ("-"*80) + "\n" + colors.default
+	print (colors.red + ("-"*80) + "\n" + colors.default)
 	
 	sys.exit()
 
@@ -194,6 +220,7 @@ else:
 	verbose = args.verbose
 	wordlist = args.wordlist
 	google = args.google
+	tor = args.tor
 	dork = args.dork
 	nmap = args.nmap
 	update = args.update
@@ -216,9 +243,30 @@ else:
 	
 	url = "http://www.%s/" % url
 	
+	if tor == True:
+		renew_tor()
+		import socks
+		import socket
+		import mechanize
+		from mechanize import Browser
+
+		def create_connection(address, timeout=None, source_address=None):
+			sock = socks.socksocket()
+			sock.connect(address)
+			return sock
+
+		socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050)
+
+		# patch the socket module
+		socket.socket = socks.socksocket
+		socket.create_connection = create_connection
+
+		br = Browser()
+		print ("New Identity: " + br.open('http://icanhazip.com').read())
+
 	Connection.redirect_tester(url, proxy, user_agent, verbose)
 	read_wl(wordlist)
-	print colors.green + "\n [+] " + colors.default + "Testing..."
+	print (colors.green + "\n [+] " + colors.default + "Testing...")
 
 	if __name__ == "__main__":
 		for t in range(args.threads):							  # For se refere ao número de processos que será criado
