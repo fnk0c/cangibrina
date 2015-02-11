@@ -12,8 +12,7 @@
 __AUTOR__	= "Fnkoc"
 
 import sys
-#sys.path.append("src/thirdparty/SocksiPy/")
-#import socks
+
 try:
 	import mechanize
 except:

@@ -2,10 +2,10 @@
 #coding=utf-8
 
 __AUTOR__	= "Fnkoc"
-__DATA__	= "19/12/14"
-__VERSAO__	= "0.8.3"
+__DATA__	= "10/02/15"
+__VERSAO__	= "0.8.4"
 
-'''Agradecimento especial ao Maximoz'''
+'''Agradecimento especial ao Maximoz e BernardoGO'''
 
 import sys
 sys.path.append("src/")
@@ -30,12 +30,12 @@ def ajuda():
  | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
  | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
   \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-                   |___/              Beta - v0.8.3
+                   |___/              Beta - v0.8.4
   Dashboard Finder
 
-  Cangibrina 0.8.3 | coded by Fnkoc
+  Cangibrina 0.8.4 | coded by Fnkoc
 
-usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] -v -n -a
+usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] -v -n -a -T
 
 Arguments:
 
@@ -43,7 +43,7 @@ Arguments:
   -u\t--url\t\tDefine target site
   -w\t--wordlist\tDefine wordlist (optional)
   -v\t--verbose\tEnable verbose mode
-  -T\t--tor\tEnable TOR mode
+  -T\t--tor\t\tEnable TOR mode
   -t\t--threads\tTells the number of process to be used
 \t\t\t(optional, default = 7)
   -g\t--google\tSearch through Google e DuckDuckGo engine
@@ -107,8 +107,6 @@ parser.add_argument("-p", "--proxy",
 				help = "Utiliza servidor proxy")
 parser.add_argument("--update",
 				action = "store_true", help = "Faz Update da tool")
-#parser.add_argument("--tor", action = "store_true",
-#				help = "Usa tor para proxy")
 
 args = parser.parse_args()
 
@@ -143,7 +141,7 @@ def renew_tor():
 	import socket
 
 	s = socket.socket()
-	s.connect(('localhost', 9051))
+	s.connect(('localhost', 9050))
 
 	s.send('AUTHENTICATE "{0}"\r\n'.format("123"))
 	resp = s.recv(1024)

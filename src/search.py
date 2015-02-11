@@ -4,8 +4,18 @@
 __AUTOR__	= "Fnkoc"
 
 import sys
-sys.path.append("src/thirdparty/beautifulsoup4-4.3.2/")
-from bs4 import BeautifulSoup
+
+try:
+	from bs4 import BeautifulSoup
+
+except as Exception:
+	print("""
+ [!] Please install BeautifulSoup!
+
+ Debian: sudo apt-get install python-beautifulsoup       
+ Arch: sudo pacman -S python2-beautifulsoup4  
+ Windows => see READEME.md""")
+
 import mechanize
 import colors
 import urllib as u

@@ -5,11 +5,11 @@
 	 | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
 	 | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
 	  \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-		               |___/                Beta - v0.8.3
+		               |___/                Beta - v0.8.4
 	  Dashboard Finder
 
 
-	  Cangibrina 0.8.3 | coded by Fnkoc
+	  Cangibrina 0.8.4 | coded by Fnkoc
 
 ====================================================================================================
 
@@ -25,26 +25,33 @@ Requisitos/Requirements:
 ====================================================================================================
 Python 2.7    
 mechanize    
-Nmap para o argumento -n    /	Nmap to use argument -n
-python-socksipy socks to use argument -T (TOR)
+beautifulsoup
+Nmap para o argumento -n    /	Nmap to use argument -n        
+python-socksipy socks to use argument -T (TOR)      
 
 
 Como instalar Mechanize/How to install Mechanize:     
 ====================================================================================================
-Linux:     
-	Debian: sudo apt-get install python-mechanize             
-	Arch: sudo pacman -S python2-mechanize     
-Windows:       
-	Download: https://pypi.python.org/pypi/mechanize/     
-	python setup.py install     
+Linux:          
+	Debian: sudo apt-get install python-mechanize                   
+	Arch: sudo pacman -S python2-mechanize          
+Windows:           
+	Download: https://pypi.python.org/pypi/mechanize/          
+	python setup.py install         
 
-Como instalar python-socksipy/How to install python-socksipy:     
+Como instalar python-socksipy/How to install python-socksipy:           
 ====================================================================================================
 Linux:     
-	Debian: sudo apt-get install python-socksipy (OPTIONAL FOR TOR)
+	Debian: sudo apt-get install python-socksipy (OPTIONAL FOR TOR)       
+	Arch: sudo pacman -S python2-socks         
 
+Como instalar BeautifulSoup/How to install BeautifulSoup:     
+====================================================================================================
+Linux:      
+	Debian: sudo apt-get install python-beautifulsoup       
+	Arch: sudo pacman -S python2-beautifulsoup4       
 
-Instalação Linux/ Linux Install:
+Instalação Linux/ Linux Install:         
 ====================================================================================================     
 Faça o download do programa, entre no diretório e execute o script "linux_install.sh"
 
@@ -55,7 +62,7 @@ Do the download, enter the directory and run the script "linux_install.sh"
 	sh linux_install.sh
 
 Video Tutorial
-==============
+====================================================================================================     
 https://www.youtube.com/watch?v=XEOjA3DUTNA
 
 Ajuda/help:
@@ -114,7 +121,7 @@ Ajuda/help:
 	  -n	--nmap			Uses Nmap to check for ports and services
 	  -a 	--user_agent	Change User-Agent
 	  -p	--proxy			Use proxy server (ONLY HTTP)
-      -t	--tor			Use TOR as proxy
+      -T	--tor			Use TOR as proxy
 
 	===============================================================================
 
@@ -142,8 +149,8 @@ Ajuda/help:
 
 Bugs: 
 ====================================================================================================
-Se achar algum bug, favor me avisar:
-If you found any bug, please notify me:
+Se achar algum bug, favor me avisar:      
+If you found any bug, please notify me:       
 
 franco.c.colombino@gmail.com      
 fb.com/fnkoc.a
