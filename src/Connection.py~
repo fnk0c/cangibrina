@@ -155,4 +155,4 @@ def tester(url, proxy, user_agent, verbose, saida):
 
 def result():
 	for l in log:
-		print (colors.green + " [+] " + colors.default + str(l))
+		print colors.green + " [+] " + colors.default + str(l)

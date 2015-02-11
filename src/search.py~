@@ -59,7 +59,7 @@ def google(query, saida, url):
 		query = "".join(query)							#Transforma lista query em string e 
 		query = query.strip("'")						#Remove aspas simples
 
-	print (colors.yellow + "[DORK]" + colors.default +" >> " + query)
+	print colors.yellow + "[DORK]" + colors.default +" >> " + query
 
 	try:
 		query = query.replace(" ", "+")					#Substitui espaços por "+"

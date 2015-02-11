@@ -266,7 +266,7 @@ else:
 
 	Connection.redirect_tester(url, proxy, user_agent, verbose)
 	read_wl(wordlist)
-	print (colors.green + "\n [+] " + colors.default + "Testing...")
+	print colors.green + "\n [+] " + colors.default + "Testing..."
 
 	if __name__ == "__main__":
 		for t in range(args.threads):							  # For se refere ao número de processos que será criado
