@@ -8,7 +8,7 @@ import sys
 try:
 	from bs4 import BeautifulSoup
 
-except as Exception:
+except:
 	print("""
  [!] Please install BeautifulSoup!
 
