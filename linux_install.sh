@@ -14,7 +14,7 @@ then
 	rm /usr/bin/cangibrina
 fi
 
-cd .. && cd ..
+cd ..
 
 if [ -e /opt/cangibrina ]
 then
