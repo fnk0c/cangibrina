@@ -9,7 +9,7 @@
 	  Dashboard Finder
 
 
-	  Cangibrina 0.8.4 | coded by Fnkoc
+	  Cangibrina 0.8.5 | coded by Fnkoc
 
 ====================================================================================================
 
@@ -69,7 +69,7 @@ Ajuda/help:
 ====================================================================================================     
 [Versão em Português]
 
-	uso: cangibrina.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -v -n -a
+	uso: cangibrina.py -u[url] -w[wordlist] -t[threads] -g -d[DORK] -s[SAIDA] -p[PROXY] --ext[EXT] -T -v -n -a
 
 	Comandos:
 
@@ -77,6 +77,7 @@ Ajuda/help:
 	  -u	--url			Define site alvo
 	  -w	--wordlist		Define wordlist (opcional)
 	  -v	--verbose		Habilita modo verbose
+	  -T	--tor			Utiliza TOR como proxy
 	  -t	--threads		Informa número de processos a serem executados (opcional, default = 10)
 	  -g	--google		Busca através dos motores Google e DuckDuckGo
 	  -d	--dork			Informa dork de busca
@@ -84,21 +85,31 @@ Ajuda/help:
 	  -n	--nmap			Utliza o Nmap para scan de serviços
 	  -a	--user_agent	Adiciona user-agent
 	  -p	--proxy			Utiliza servidor proxy (Apenas HTTP)
-	  -T	--tor			Utiliza TOR como proxy
+	    	--update		Atualiza ferramenta
+	    	--ext			Define extensao da página (asp, aspx, php, brf, cfm, cgi, html, js, php)
+
 
 	===============================================================================
 
 	Exemplos de uso:
 
+	python cangibrina.py -u facebook.com
+
+	python cangibrina.py -u facebook.com -v -s facebook
+
 	python cangibrina.py -u facebook.com -w /root/diretorios.txt -t 10 -v
 
-	python cangibrina.py -u facebook.com -v -s face_brute
+	python cangibrina.py -u facebook.com -g -v
 
-	python cangibrina.py -u facebook.com -g -s face -v
+	python cangibrina.py -u facebook.com -g -d 'site:facebook.com inurl:login' -s face
 
-	python cangibrina.py -u facebook.com -g -d 'inurl:login' -s face
+	python cangibrina.py -u facebook.com -v -n
 
-	python cangibrina.py -u facebook.com -v -n -a
+	python cangibrina.py -u facebook.com -a
+
+	python cangibrina.py -u facebook.com -p 187.25.2.485:8080
+	
+	python cangibrina.py -u facebook.com --ext php
 
 		[IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS SIMPLES!
 		[Example] 'inurl:login.php'
@@ -106,7 +117,7 @@ Ajuda/help:
  
 [English Version]
 
-	usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] -v -n -a
+	usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] --ext[EXT] -T -v -n -a
 
 	Arguments:
 
@@ -114,6 +125,7 @@ Ajuda/help:
 	  -u	--url			Define target site
 	  -w	--wordlist		Define wordlist (optional)
 	  -v	--verbose		Enable verbose mode
+      -T	--tor			Use TOR as proxy
 	  -t	--threads		Tells the number of process to be used (optional, default = 7)
 	  -g	--google		Search through Google e DuckDuckGo engine
 	  -d	--dork			Search dork to use
@@ -121,7 +133,9 @@ Ajuda/help:
 	  -n	--nmap			Uses Nmap to check for ports and services
 	  -a 	--user_agent	Change User-Agent
 	  -p	--proxy			Use proxy server (ONLY HTTP)
-      -T	--tor			Use TOR as proxy
+  	    	--update		Update tool
+	    	--ext			Define page extension (asp, aspx, php, brf, cfm, cgi, html, js, php)
+
 
 	===============================================================================
 
@@ -142,15 +156,31 @@ Ajuda/help:
 	python cangibrina.py -u facebook.com -a
 
 	python cangibrina.py -u facebook.com -p 187.25.2.485:8080
+	
+	python cangibrina.py -u facebook.com --ext php
 
 		[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !
 		[Example] 'inurl:login.php'
 
+Gerando Wordlists/ Generating Wordlists
+=======================================
+[Versão em Português]  
+
+Você pode gerar wordlists customizadas através da ferramenta wl_generator.py localizada em  
+Wordlists/wl generator/  
+Dentro do diretório você encontrará 3 arquivos de texto, diretorios, extensoes, paginas. Estes  
+são responsáveis por conter as informações necessárias para a geração da wordlist.  
+
+[English Version]  
+
+You can generate customs wordlists using the tool wl generator located at Wordlists/wl generator  
+Inside this directory you will find 3 text files, diretorios, extensoes, paginas. These are  
+responsible to keep all the necessary informations that are required to generate a wordlist  
 
 Bugs: 
 ====================================================================================================
-Se achar algum bug, favor me avisar:      
-If you found any bug, please notify me:       
+Se achar algum bug, favor me avisar:  
+If you found any bug, please notify me:  
 
-franco.c.colombino@gmail.com      
-fb.com/fnkoc.a
+franco.c.colombino@gmail.com  
+fb.com/fnkoc.a  

@@ -3,49 +3,47 @@
 
 __AUTOR__	= "Fnkoc"
 __DATA__	= "10/02/15"
-__VERSAO__	= "0.8.4"
+__VERSAO__	= "0.8.5"
 
 '''Agradecimento especial ao Maximoz e BernardoGO'''
 
 import sys
 sys.path.append("src/")
-import Connection
-import colors
 import argparse
 import os
 import time
+import threading
+import Connection
+import colors
 import Nmap
 import search
-import threading
 from threading import Thread
-
 
 '''==============================================================================='''
 def ajuda():
 
 	import Clear
 
-	print("""   ____                  _ _          _             
+	print("""%s   ____                  _ _          _             
   / ___|__ _ _ __   __ _(_) |__  _ __(_)_ __   __ _ 
  | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
  | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
   \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-                   |___/              Beta - v0.8.4
-  Dashboard Finder
+                   |___/%s              Beta - v0.8.5
+  %sDashboard Finder%s
 
-  Cangibrina 0.8.4 | coded by Fnkoc
+  Cangibrina 0.8.5 | coded by Fnkoc
 
-usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] -v -n -a -T
+usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] -p[PROXY] --ext[EXT] -T -v -n -a 
 
 Arguments:
 
   -h\t--help\t\tShow this help and exit
-  -u\t--url\t\tDefine target site
+  -u\t--url\t\tDefine target site (required)
   -w\t--wordlist\tDefine wordlist (optional)
   -v\t--verbose\tEnable verbose mode
   -T\t--tor\t\tEnable TOR mode
-  -t\t--threads\tTells the number of process to be used
-\t\t\t(optional, default = 7)
+  -t\t--threads\tTells the number of process to be used (default = 7)
   -g\t--google\tSearch through Google e DuckDuckGo engine
   -d\t--dork\t\tSearch dork to use
   -s\t--saida\t\tOutput name to be use
@@ -53,6 +51,7 @@ Arguments:
   -a\t--user_agent\tChange User-Agent
   -p\t--proxy\t\tUse proxy server (ONLY HTTP)
     \t--update\tUpdate tool
+    \t--ext\t\tDefine page extension (asp, aspx, php, brf, cfm, cgi, html, js, php)
 
 ===============================================================================
 
@@ -73,7 +72,11 @@ python cangibrina.py -u facebook.com -v -n
 python cangibrina.py -u facebook.com -a
 
 python cangibrina.py -u facebook.com -p 187.25.2.485:8080
-""")
+
+python cangibrina.py -u facebook.com -T
+
+python cangibrina.py -u facebook.com --ext php
+""" % (colors.white, colors.default, colors.red, colors.default))
 	print(colors.red + "[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !\n"+ colors.default)
 	print(colors.red + "[Example] 'inurl:login.php'\n\n" + colors.default)
 
@@ -90,7 +93,7 @@ parser.add_argument("-w", "--wordlist",
 parser.add_argument("-v", "--verbose",
 				action = "store_true", help = "Habilita modo verbose")
 parser.add_argument("-T", "--tor",
-				action = "store_true", help = "Habilita modo verbose")
+				action = "store_true", help = "Habilita TOR")
 parser.add_argument("-t", "--threads",default = 7, type = int,
 				help = "Informa número de processos a serem executados\n Default=10")
 parser.add_argument("-g", "--google", 
@@ -107,6 +110,8 @@ parser.add_argument("-p", "--proxy",
 				help = "Utiliza servidor proxy")
 parser.add_argument("--update",
 				action = "store_true", help = "Faz Update da tool")
+parser.add_argument("--ext",
+				nargs = 1, help="Define extensao pagina")
 
 args = parser.parse_args()
 
@@ -125,7 +130,7 @@ def read_wl(wordlist):
 	try:
 		if wordlist == None:		#Caso seja específicada uma wordlist
 			os.chdir("Wordlists")	#Caso NÃO sejá especificada uma wordlist será usada a padrão
-			diretorios = open("default", "r").readlines()
+			diretorios = open("wl_default", "r").readlines()
 			create_lst()
 			
 		else:
@@ -161,7 +166,7 @@ def renew_tor():
 
 
 def brute_force(lst):
-	for ways in lst:
+	def process():
 		final = url + ways
 		lst.remove(ways)
 		
@@ -171,7 +176,16 @@ def brute_force(lst):
 			print (final)
 		else:
 			pass
-	
+
+	for ways in lst:
+		if ext:
+			ex = "".join(ext)
+			if ex in ways:
+				process()
+			else:
+				pass
+		else:
+			process()	
 	sys.exit()
 
 """====P.L.U.S================================================================"""
@@ -222,7 +236,7 @@ else:
 	dork = args.dork
 	nmap = args.nmap
 	update = args.update
-#	tor = args.tor
+	ext = args.ext
 
 	"""====A.R.R.U.M.A.-.U.R.L================================================"""
 	
