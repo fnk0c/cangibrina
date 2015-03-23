@@ -5,7 +5,7 @@
 	 | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
 	 | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
 	  \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-		               |___/                Beta - v0.8.4
+		               |___/                Beta - v0.8.5
 	  Dashboard Finder
 
 
@@ -32,22 +32,22 @@ python-socksipy socks to use argument -T (TOR)
 
 Como instalar Mechanize/How to install Mechanize:     
 ====================================================================================================
-Linux:          
-	Debian: sudo apt-get install python-mechanize                   
-	Arch: sudo pacman -S python2-mechanize          
-Windows:           
+######Linux:  
+	Debian: sudo apt-get install python-mechanize  
+	Arch: sudo pacman -S python2-mechanize  
+######Windows:  
 	Download: https://pypi.python.org/pypi/mechanize/          
 	python setup.py install         
 
 Como instalar python-socksipy/How to install python-socksipy:           
 ====================================================================================================
-Linux:     
+######Linux:     
 	Debian: sudo apt-get install python-socksipy (OPTIONAL FOR TOR)       
 	Arch: sudo pacman -S python2-socks         
 
 Como instalar BeautifulSoup/How to install BeautifulSoup:     
 ====================================================================================================
-Linux:      
+#######Linux:      
 	Debian: sudo apt-get install python-beautifulsoup       
 	Arch: sudo pacman -S python2-beautifulsoup4       
 
