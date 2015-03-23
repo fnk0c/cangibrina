@@ -179,11 +179,14 @@ def brute_force(lst):
 
 	for ways in lst:
 		if ext:
-			ex = "".join(ext)
-			if ex in ways:
-				process()
+			if "." in ways:
+				ex = "".join(ext)
+				if ex in ways:
+					process()
+				else:
+					pass
 			else:
-				pass
+				process()
 		else:
 			process()	
 	sys.exit()
