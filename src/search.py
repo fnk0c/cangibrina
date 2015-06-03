@@ -14,7 +14,7 @@ except:
 
  Debian: sudo apt-get install python-beautifulsoup       
  Arch: sudo pacman -S python2-beautifulsoup4  
- Windows => see READEME.md""")
+ Windows => see README.md""")
 
 import mechanize
 import colors

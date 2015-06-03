@@ -21,7 +21,7 @@ except:
 
  Debian/Ubuntu => apt-get install python-mechanize
  Arch/Manjaro => pacman -S python2-mechanize
- Windows => see READEME.md""")
+ Windows => see README.md""")
 
 import urllib as u
 import colors
