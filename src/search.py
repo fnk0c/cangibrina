@@ -3,6 +3,20 @@
 
 __AUTOR__	= "Fnkoc"
 
+"""
+    Copyright (C) 2015  Franco Colombino
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+"""
+
 import sys
 
 try:
@@ -26,7 +40,7 @@ import os
 def DuckDuckGo(query, saida, url):
 	print (colors.green + "\n\t[!] " + colors.default + "Searching on DuckDuckGo...\n")
 	if query == None:
-		query = "site:" + url.replace("http://", "") + " inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)"
+		query = "site:" + url.replace("http://", "") + " inurl:(login||adm||admin||admin/account||controlpanel||adminitem||adminitems||administrator||administration||admin_area||manager||letmein||superuser||access||sysadm||superman||supervisor||control||member||members||user||cp||uvpanel||manage||management||signin||log-in||log_in||sign_in||sign-in||users||accounts)"
 
 	else:
 		query = "".join(query)							#Transforma lista em string 
@@ -64,7 +78,7 @@ def google(query, saida, url):
 	print (colors.green + "\n\t[!] " + colors.default + "Searching on Google...\n")
 
 	if query == None:
-		query = "site:" + url.replace("http://", "") + " inurl:(login/|adm/|admin/|admin/account|/controlpanel|/adminLogin|admin/adminLogin|adminitem/|adminitems/|administrator/|administration/|admin_area/|manager/|letmein/|superuser/|access/|sysadm/|superman/|supervisor/|control/|member/|members/|user/|cp/|uvpanel/|manage/|management/|signin/|log-in/|log_in/|sign_in/|sign-in/|users/|accounts/)"
+		query = "site:" + url.replace("http://", "") + " inurl:(login||adm||admin||admin/account||controlpanel||adminitem||adminitems||administrator||administration||admin_area||manager||letmein||superuser||access||sysadm||superman||supervisor||control||member||members||user||cp||uvpanel||manage||management||signin||log-in||log_in||sign_in||sign-in||users||account)"
 	else:
 		query = "".join(query)							#Transforma lista query em string e 
 		query = query.strip("'")						#Remove aspas simples
@@ -90,9 +104,10 @@ def google(query, saida, url):
 				print (t)
 				print (l + '\n')
 				log.write(str(l) + '\n')
+		
+		log.close()
 	except:
 		pass
 
-	log.close()
 	print (colors.green + " [+] " + colors.default + "Log file has been generated")
 	print (colors.green + ' [+] ' + colors.default + 'Log file at \"Cangibrina/output\"\n')

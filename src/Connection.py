@@ -1,6 +1,20 @@
 #!/usr/bin/python
 #coding=utf-8
 
+"""
+    Copyright (C) 2015  Franco Colombino
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+"""
+
 ###########[PERIGO]#############
 #Gambiarra fudida neste arquivo#
 ################################
@@ -90,8 +104,6 @@ def redirect_tester(url, proxy, user_agent, verbose):
 			pass
 
 	except Exception as e:
-		print (str(e))
-		
 		if verbose:
 			print(colors.red + " [!] " + colors.default + str(e))
 		sys.exit()
@@ -133,10 +145,14 @@ def tester(url, proxy, user_agent, verbose, saida):
 
 		elif conn == 301:
 			print(colors.green + " [+] " + colors.default + "Redirecting: %s | %s |") % (url, conn)
+			log.append(url)
+			log.append(conn)
 		
 		elif conn == 403:
 			print(colors.red + " [!] " + colors.default + "Forbidden: %s | %s |") % (url, conn)
 			print(" Try to change your User-Agent (\"-a\")")
+			log.append(url)
+			log.append(conn)
 
 		elif conn == 404:
 			if verbose:
@@ -147,7 +163,6 @@ def tester(url, proxy, user_agent, verbose, saida):
 			print("Response Code: %s") % conn
 
 	except Exception as e:
-		print (str(e))
 		if verbose:
 			print(colors.red + " [!] " + colors.default + str(e))
 		pass

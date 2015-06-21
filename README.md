@@ -25,7 +25,7 @@ Requisitos/Requirements:
 ====================================================================================================
 Python 2.7    
 mechanize    
-beautifulsoup
+beautifulsoup  
 Nmap para o argumento -n    /	Nmap to use argument -n        
 python-socksipy socks to use argument -T (TOR)      
 
@@ -47,9 +47,12 @@ Como instalar python-socksipy/How to install python-socksipy:
 
 Como instalar BeautifulSoup/How to install BeautifulSoup:     
 ====================================================================================================
-#######Linux:      
+######Linux:      
 	Debian: sudo apt-get install python-beautifulsoup       
-	Arch: sudo pacman -S python2-beautifulsoup4       
+	Arch: sudo pacman -S python2-beautifulsoup4     
+######Windows:
+	Download: https://pypi.python.org/pypi/beautifulsoup4  
+	python setup.py install  
 
 Instalação Linux/ Linux Install:         
 ====================================================================================================     
@@ -166,14 +169,14 @@ Gerando Wordlists/ Generating Wordlists
 =======================================
 [Versão em Português]  
 
-Você pode gerar wordlists customizadas através da ferramenta wl_generator.py localizada em  
+Você pode gerar wordlists customizadas através da ferramenta wlgenerator.py localizada em  
 Wordlists/wl generator/  
 Dentro do diretório você encontrará 3 arquivos de texto, diretorios, extensoes, paginas. Estes  
 são responsáveis por conter as informações necessárias para a geração da wordlist.  
 
 [English Version]  
 
-You can generate customs wordlists using the tool wl generator located at Wordlists/wl generator  
+You can generate customs wordlists using the tool wlgenerator.py located at Wordlists/wl generator  
 Inside this directory you will find 3 text files, diretorios, extensoes, paginas. These are  
 responsible to keep all the necessary informations that are required to generate a wordlist  
 

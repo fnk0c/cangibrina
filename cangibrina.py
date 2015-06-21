@@ -2,11 +2,25 @@
 #coding=utf-8
 
 __AUTOR__	= "Fnkoc"
-__DATA__	= "07/05/15"
-__VERSAO__	= "0.8.5"
+__DATA__	= "19/06/15"
+__VERSAO__	= "0.8.6"
 __GITHUB__	= "https://github.com/fnk0c"
 
 '''Agradecimento especial ao Maximoz e BernardoGO'''
+
+"""
+    Copyright (C) 2015  Franco Colombino
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+"""
 
 import sys
 sys.path.append("src/")
@@ -20,7 +34,7 @@ import search
 from time import sleep
 from threading import Thread
 
-"""==========================================================================="""
+"""=========================================================================="""
 def ajuda():
 
 	import Clear
@@ -30,10 +44,10 @@ def ajuda():
  | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
  | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
   \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-                   |___/%s              Beta - v0.8.5
+                   |___/%s              Beta - v%s
   %sDashboard Finder%s
 
-  Cangibrina 0.8.5 | coded by Fnkoc
+  Cangibrina %s | coded by Fnkoc
 
 usage: cangibrina.py -u[URL] -w[WORDLIST] -t[THREADS] -g -d[DORK] -s[OUTPUT] \
 -p[PROXY] --ext[EXT] -T -v -n -a 
@@ -79,7 +93,8 @@ python cangibrina.py -u facebook.com -p 187.25.2.485:8080
 python cangibrina.py -u facebook.com -T
 
 python cangibrina.py -u facebook.com --ext php
-""" % (colors.white, colors.default, colors.red, colors.default))
+""" % (colors.white, colors.default, __VERSAO__, colors.red, colors.default,\
+__VERSAO__))
 	print(colors.red + "[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !\n"+ \
 colors.default)
 	print(colors.red + "[Example] 'inurl:login.php'\n\n" + colors.default)
@@ -135,6 +150,7 @@ def read_wl(wordlist):
 		if wordlist == None:		#Caso seja específicada uma wordlist
 			os.chdir("Wordlists")	#Caso NÃO sejá especificada uma wordlist será usada a padrão
 			diretorios = open("wl_default", "r").readlines()
+			os.chdir("..")
 			create_lst()
 			
 		else:
@@ -203,7 +219,6 @@ def plus():
 	print (robots)
 	Connection.tester(robots, proxy, user_agent, verbose, saida)
 
-	os.chdir("..")
 	os.chdir("output")
 	if google:
 		search.google(dork, saida, url)
@@ -243,12 +258,18 @@ else:
 	nmap = args.nmap
 	update = args.update
 	ext = args.ext
+	help = args.help
 
 	"""====A.R.R.U.M.A.-.U.R.L==============================================="""
 	
 	if update:
 		os.system("git fetch && git pull")
 		sys.exit()
+
+	elif help == True:
+		ajuda()
+		sys.exit()
+
 	else:
 		pass
 
