@@ -29,9 +29,31 @@ beautifulsoup
 Nmap para o argumento -n    /	Nmap to use argument -n        
 python-socksipy socks to use argument -T (TOR)      
 
+Instalação/ Install:         
+====================================================================================================     
+**Linux**  
+Faça o download do programa, entre no diretório e execute o script "setup.py"
 
-Como instalar Mechanize/How to install Mechanize:     
-====================================================================================================
+Do the download, enter the directory and run the script "setup.py"
+
+	git clone http://github.com/fnk0c/cangibrina.git
+	cd cangibrina
+	python setup.py install
+
+**Windows**  
+Faça o download do programa, extraia, entre no diretório e execute o script "setup.py"  
+
+Do the download, extract, enter the directory and run the script "setup.py"  
+
+	https://github.com/fnk0c/cangibrina/archive/master.zip
+	python setup.py install
+
+
+===========
+## Se prefere fazer manualmete. Siga as etapas: 
+## If you prefer to install manually. Follow the steps:  
+
+####Como instalar Mechanize/How to install Mechanize:     
 ######Linux:  
 	Debian: sudo apt-get install python-mechanize  
 	Arch: sudo pacman -S python2-mechanize  
@@ -39,30 +61,18 @@ Como instalar Mechanize/How to install Mechanize:
 	Download: https://pypi.python.org/pypi/mechanize/          
 	python setup.py install         
 
-Como instalar python-socksipy/How to install python-socksipy:           
-====================================================================================================
+####Como instalar python-socksipy/How to install python-socksipy:           
 ######Linux:     
 	Debian: sudo apt-get install python-socksipy (OPTIONAL FOR TOR)       
 	Arch: sudo pacman -S python2-socks         
 
-Como instalar BeautifulSoup/How to install BeautifulSoup:     
-====================================================================================================
+####Como instalar BeautifulSoup/How to install BeautifulSoup:     
 ######Linux:      
 	Debian: sudo apt-get install python-beautifulsoup       
 	Arch: sudo pacman -S python2-beautifulsoup4     
 ######Windows:
 	Download: https://pypi.python.org/pypi/beautifulsoup4  
 	python setup.py install  
-
-Instalação Linux/ Linux Install:         
-====================================================================================================     
-Faça o download do programa, entre no diretório e execute o script "linux_install.sh"
-
-Do the download, enter the directory and run the script "linux_install.sh"
-
-	git clone http://github.com/fnk0c/cangibrina.git
-	cd cangibrina
-	sh linux_install.sh
 
 Video Tutorial
 ====================================================================================================     
