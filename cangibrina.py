@@ -2,7 +2,7 @@
 #coding=utf-8
 
 __AUTOR__	= "Fnkoc"
-__DATA__	= "19/06/15"
+__DATA__	= "11/07/15"
 __VERSAO__	= "0.8.6"
 __GITHUB__	= "https://github.com/fnk0c"
 
@@ -23,9 +23,15 @@ __GITHUB__	= "https://github.com/fnk0c"
 """
 
 import sys
+import os
+
+# Will be used when setup.py gets ready
+#if sys.platform == "win32":
+#	if os.getcwd() != "C:\Program Files (x86)\cangibrina":
+#		os.chdir("C:\Program Files (x86)\cangibrina")
+
 sys.path.append("src/")
 import argparse
-import os
 import threading
 import Connection
 import colors
@@ -33,6 +39,7 @@ import Nmap
 import search
 from time import sleep
 from threading import Thread
+
 
 """=========================================================================="""
 def ajuda():
