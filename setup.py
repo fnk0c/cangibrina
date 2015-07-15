@@ -72,17 +72,18 @@ Please install manually")
 				system("sudo rm -rf /usr/share/cangibrina")
 
 			#Creates Symlink
-		 	with open("cangibrina", "w") as symlink:
-		 		symlink.write("#!/bin/bash\n\n")
-		 		symlink.write("cd /usr/share/cangibrina\n")
-		 		symlink.write("exec python2 cangibrina.py $@")
- 
-		 	system("sudo mv cangibrina /usr/bin")
-		 	system("sudo chmod +x /usr/bin/cangibrina")
-		 	system("sudo cd .. && mv cangibrina /usr/share/")
+			with open("cangibrina", "w") as symlink:
+				symlink.write("#!/bin/bash\n\n")
+				symlink.write("cd /usr/share/cangibrina\n")
+				symlink.write("exec python2 cangibrina.py $@")
+
+			system("sudo mv cangibrina /usr/bin")
+			system("sudo chmod +x /usr/bin/cangibrina")
+			system("sudo cd .. && mv cangibrina /usr/share/")
 
 			print(" [+] Done!\n Type \"cangibrina\" to execute")
-		"""===W.I.N.D.O.W.S=================================================="""
+		
+			"""===W.I.N.D.O.W.S=============================================="""
 
 		elif windows == True:
 			print(" [+] Downloading Modules ...\n")
