@@ -38,7 +38,7 @@ try:
 		elif platform == "win32":
 			windows = True
 		else:
-			print(" [-] This installer does not support your current system")
+			print(" [-] This installer does not support your current system (%s)" % platform)
 			exit()
 
 		"""===L.I.N.U.X======================================================"""
@@ -46,7 +46,7 @@ try:
 		if linux == True:
 			#Check which package manager is going to be use
 
-			if path.isfile("/etc/apt/source.list"):
+			if path.isfile("/etc/apt/sources.list"):
 				system("sudo apt-get install python-mechanize python-socksipy \
 python-bs4 -y")
 
@@ -62,6 +62,7 @@ python-bs4 -y")
 			else:
 				print(" [-] This installer does not support your distribution. \
 Please install manually")
+				exit()
 
 			#Remove if already installed
 			if path.isfile("/usr/bin/cangibrina"):
