@@ -73,10 +73,10 @@ python-bs4 -y")
 				with ZipFile("socks.zip", "r") as ZIP:
 					ZIP.extractall(".")
 
-				for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "1.5.0"):
+				for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "PySocks-1.5.0"):
 					system("cd %s && sudo python setup.py install" % i)
 				
-				system("rm -rf socks* bs4.tar.gz beautiful* mechanize* 1.5.0")
+				system("rm -rf socks* bs4.tar.gz beautiful* mechanize* PySocks*")
 
 			else:
 				print(" [-] This installer does not support your distribution. \
@@ -120,10 +120,10 @@ Please install manually")
 			with ZipFile("socks.zip", "r") as ZIP:
 				ZIP.extractall(".")
 
-			for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "1.5.0"):
+			for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "PySocks-1.5.0"):
 				system("cd %s && sudo python setup.py install" % i)
 
-			system("del bs4.tar.gz mechanize* beautifulsoup4-4.4.0 1.5.0")
+			system("del bs4.tar.gz mechanize* beautifulsoup4-4.4.0 1.5.0 PySocks*")
 			system("cd .. && rename cangibrina-master cangibrina")
 
 			####TESTING####
