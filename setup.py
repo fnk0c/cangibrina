@@ -54,10 +54,29 @@ python-bs4 -y")
 				#Socksipy can only be found on AUR. That's why we need to build
 				system("sudo pacman -S python2-mechanize python2-beautifulsoup4\
  --needed")
-				urlretrieve("https://aur.archlinux.org/packages/py/python-socks/PKGBUILD")
+				urlretrieve("https://aur.archlinux.org/packages/py/python-socks/PKGBUILD", "PKGBUILD")
 				system("makepkg PKGBUILD")
 				system("sudo pacman -U python-socks-1.5.0-1-any.pkg.tar.xz")
-				system("rm -rf PKGBUILD python-socks-1.5.0-1-any.pkg.tar.xz")
+				system("rm -rf PKGBUILD python-socks-1.5.0-1-any.pkg.tar.xz pkg")
+
+			elif path.isfile("/etc/yum.conf"):
+				print(" [+] Downloading Modules ...\n")
+				urlretrieve("https://pypi.python.org/packages/source/m/mechanize/mechanize-0.2.5.zip#md5=a497ad4e875f7506ffcf8ad3ada4c2fc", "mechanize.zip")
+				with ZipFile("mechanize.zip", "r") as ZIP:
+					ZIP.extractall(".")
+
+				urlretrieve("https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.0.tar.gz#md5=63d1f33e6524f408cb6efbc5da1ae8a5", "bs4.tar.gz")
+				with tarfile.open("bs4.tar.gz", "r:gz") as TAR:
+					TAR.extractall(".")
+
+				urlretrieve("https://github.com/Anorov/PySocks/archive/1.5.0.zip", "socks.zip")
+				with ZipFile("socks.zip", "r") as ZIP:
+					ZIP.extractall(".")
+
+				for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "1.5.0"):
+					system("cd %s && sudo python setup.py install" % i)
+				
+				system("rm -rf socks* bs4.tar.gz beautiful* mechanize* 1.5.0")
 
 			else:
 				print(" [-] This installer does not support your distribution. \
@@ -93,9 +112,18 @@ Please install manually")
 			with tarfile.open("bs4.tar.gz", "r:gz") as TAR:
 				TAR.extractall(".")
 
-			system("cd mechanize-0.2.5 && python setup.py install")
-			system("cd beautifulsoup4-4.4.0 && python setup.py install")
-			system("del bs4.tar.gz mechanize.zip mechanize-0.2.5 beautifulsoup4-4.4.0")
+			urlretrieve("https://downloads.sourceforge.net/#!/project/socksipy/socksipy/SocksiPy%201.00/SocksiPy.zip", "socksipy.zip")
+			with ZipFile("socksipy.zip", "r") as ZIP:
+				ZIP.extractall(".")
+
+			urlretrieve("https://github.com/Anorov/PySocks/archive/1.5.0.zip", "socks.zip")
+			with ZipFile("socks.zip", "r") as ZIP:
+				ZIP.extractall(".")
+
+			for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "1.5.0"):
+				system("cd %s && sudo python setup.py install" % i)
+
+			system("del bs4.tar.gz mechanize* beautifulsoup4-4.4.0 1.5.0")
 			system("cd .. && rename cangibrina-master cangibrina")
 
 			####TESTING####
