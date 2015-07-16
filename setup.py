@@ -112,18 +112,14 @@ Please install manually")
 			with tarfile.open("bs4.tar.gz", "r:gz") as TAR:
 				TAR.extractall(".")
 
-			urlretrieve("https://downloads.sourceforge.net/#!/project/socksipy/socksipy/SocksiPy%201.00/SocksiPy.zip", "socksipy.zip")
-			with ZipFile("socksipy.zip", "r") as ZIP:
-				ZIP.extractall(".")
-
 			urlretrieve("https://github.com/Anorov/PySocks/archive/1.5.0.zip", "socks.zip")
 			with ZipFile("socks.zip", "r") as ZIP:
 				ZIP.extractall(".")
 
 			for i in ("mechanize-0.2.5", "beautifulsoup4-4.4.0", "PySocks-1.5.0"):
-				system("cd %s && sudo python setup.py install" % i)
+				system("cd %s && python setup.py install" % i)
 
-			system("del bs4.tar.gz mechanize* beautifulsoup4-4.4.0 1.5.0 PySocks*")
+			system("del bs4.tar.gz mechanize* beautifulsoup4-4.4.0 PySocks*")
 			system("cd .. && rename cangibrina-master cangibrina")
 
 			####TESTING####
