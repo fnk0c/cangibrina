@@ -54,10 +54,7 @@ python-bs4 -y")
 				#Socksipy can only be found on AUR. That's why we need to build
 				system("sudo pacman -S python2-mechanize python2-beautifulsoup4\
  --needed")
-				socks = urlopen("https://aur.archlinux.org/packages/py/python-\
-socks/PKGBUILD").read()
-				with open("PKGBUILD", "w") as pkgbuild_socks:
-					pkgbuild_socks.write(str(socks))
+				urlretrieve("https://aur.archlinux.org/packages/py/python-socks/PKGBUILD")
 				system("makepkg PKGBUILD")
 				system("sudo pacman -U python-socks-1.5.0-1-any.pkg.tar.xz")
 				system("rm -rf PKGBUILD python-socks-1.5.0-1-any.pkg.tar.xz")
@@ -79,7 +76,7 @@ Please install manually")
 
 			system("sudo mv cangibrina /usr/bin")
 			system("sudo chmod +x /usr/bin/cangibrina")
-			system("sudo cd .. && mv cangibrina /usr/share/")
+			system("cd .. && sudo mv cangibrina /usr/share/")
 
 			print(" [+] Done!\n Type \"cangibrina\" to execute")
 		
