@@ -41,7 +41,7 @@ import urllib as u
 import colors
 
 global log
-log = []
+py_log = []
 
 def redirect_tester(url, proxy, user_agent, verbose):
 	'''====P.R.O.X.Y=========================================================='''
@@ -140,13 +140,13 @@ def tester(url, proxy, user_agent, verbose, saida):
 
 		if conn == 200:
 			print(colors.green + " [+] " + colors.default + "Found: %s | %s |") % (url, conn)
-			log.append(url)
-			log.append(conn)
+			py_log.append(url)
+			py_log.append(conn)
 
 		elif conn == 301:
 			print(colors.green + " [+] " + colors.default + "Redirecting: %s | %s |") % (url, conn)
-			log.append(url)
-			log.append(conn)
+			py_log.append(url)
+			py_log.append(conn)
 		
 		elif conn == 403:
 			print(colors.red + " [!] " + colors.default + "Forbidden: %s | %s |") % (url, conn)
@@ -167,6 +167,10 @@ def tester(url, proxy, user_agent, verbose, saida):
 			print(colors.red + " [!] " + colors.default + str(e))
 		pass
 
-def result():
-	for l in log:
+def result(log):
+	for l in py_log:
 		print (colors.green + " [+] " + colors.default + str(l))
+
+	if log:
+		with open("log.txt", "w") as txt_log:
+			txt_log.write(str(py_log))

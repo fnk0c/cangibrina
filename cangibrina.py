@@ -75,6 +75,7 @@ Arguments:
   -p\t--proxy\t\tUse proxy server (ONLY HTTP)
     \t--update\tUpdate tool
     \t--ext\t\tDefine page extension (asp, aspx, php, brf, cfm, cgi, js, php)
+    \t--log\r\rGenerate log file
 
 ================================================================================
 
@@ -138,6 +139,8 @@ parser.add_argument("--update",
 		action = "store_true", help = "Faz Update da tool")
 parser.add_argument("--ext",
 		nargs = 1, help="Define extensao pagina")
+parser.add_argument("--log",
+		action = "store_true", help = "Gera arquivo de log")
 
 args = parser.parse_args()
 
@@ -241,7 +244,7 @@ def plus():
 	"""====R.E.S.U.L.T======================================================="""
 	print (colors.red + "\n" + ("-"*80) + colors.default)
 	print (colors.green + " [+] " + colors.default + "[Results]\n")
-	Connection.result()
+	Connection.result(log)
 	print (colors.red + ("-"*80) + "\n" + colors.default)
 	
 	sys.exit()
@@ -265,6 +268,7 @@ else:
 	nmap = args.nmap
 	update = args.update
 	ext = args.ext
+	log = args.log
 	help = args.help
 
 	"""====A.R.R.U.M.A.-.U.R.L==============================================="""

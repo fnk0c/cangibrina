@@ -51,15 +51,15 @@ def DuckDuckGo(query, saida, url):
 		query = query.replace(" ", "+")					#Substitui espaços por "+"
 		req = "http://duckduckgo.com/html/?q=%s" % query
 		html = u.urlopen(req).read()
-		soup = BeautifulSoup(html)
+		soup = BeautifulSoup(html, "html5lib")
 
 		log = open(saida + "_duck.txt", "w")			#A parte do for é basicamente analisar a estrutura do 
 														#site, para assim, saber quais serão as classes que lhe interessam
-		for results in soup.findAll("div", attrs={"class":"links_main links_deep"}):
-			for title in results.findAll("a", attrs={"class":"large"}):
+		for results in soup.findAll("div", attrs={"class":"results"}):
+			for title in results.findAll("a", attrs={"class":"result__a"}):
 				t = title.text
 				t = t.title()
-			for link in results.findAll("a", attrs={"class":"large"}):
+			for link in results.findAll("a", attrs={"class":"result__url"}):
 				l = link.get("href")
 				print (t)
 				print (l + "\n")
@@ -92,7 +92,7 @@ def google(query, saida, url):
 		br.set_handle_robots(False)						#Nega ser um bot
 		br.addheaders = [("User-agent", "chrome")]		#Adiciona User-Agent
 		html = br.open(req).read()						#Puxa código HTML da página 
-		soup = BeautifulSoup(html)
+		soup = BeautifulSoup(html, "html5lib")
 
 		log = open(saida + "_google.txt", "w")
 		for results in soup.findAll(attrs={"class":"g"}):	#Abra "Inspecionar elemento" em seu navegador para compreender
