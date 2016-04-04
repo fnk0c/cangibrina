@@ -2,7 +2,7 @@
 #coding=utf-8
 
 __AUTOR__	= "Fnkoc"
-__DATA__	= "11/07/15"
+__DATA__	= "03/04/16"
 __VERSAO__	= "0.8.6"
 __GITHUB__	= "https://github.com/fnk0c"
 
