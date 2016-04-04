@@ -2,7 +2,7 @@
 #coding=utf-8
 
 __AUTOR__	= "Fnkoc"
-__DATA__	= "10/07/15"
+__DATA__	= "03/04/16"
 __GITHUB__	= "https://github.com/fnk0c"
 
 '''Agradecimento especial ao Maximoz e BernardoGO'''
@@ -48,13 +48,13 @@ try:
 
 			if path.isfile("/etc/apt/sources.list"):
 				system("sudo apt-get install python-mechanize python-socksipy \
-python-bs4 -y")
+python-bs4 python-html5lib -y")
 
 			elif path.isfile("/etc/pacman.conf"):
 				#Socksipy can only be found on AUR. That's why we need to build
 				system("sudo pacman -S python2-mechanize python2-beautifulsoup4\
- --needed")
-				urlretrieve("https://aur.archlinux.org/packages/py/python-socks/PKGBUILD", "PKGBUILD")
+ python2-html5lib --needed")
+				urlretrieve("https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=python2-socks", "PKGBUILD")
 				system("makepkg PKGBUILD")
 				system("sudo pacman -U python-socks-1.5.0-1-any.pkg.tar.xz")
 				system("rm -rf PKGBUILD python-socks-1.5.0-1-any.pkg.tar.xz pkg")
