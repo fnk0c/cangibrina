@@ -1,0 +1,4 @@
+mechanize
+PySocks
+beautifulsoup4
+html5lib
