@@ -5,7 +5,7 @@
 	 | |   / _` | '_ \ / _` | | '_ \| '__| | '_ \ / _` |
 	 | |__| (_| | | | | (_| | | |_) | |  | | | | | (_| |
 	  \____\__,_|_| |_|\__, |_|_.__/|_|  |_|_| |_|\__,_|
-		               |___/                Beta - v0.8.5
+		               |___/                Beta - v0.8.7
 	  Dashboard Finder
 
 
@@ -20,13 +20,13 @@ over wordlist, google, nmap, and robots.txt
 
 Requirements:  
 ====================================================================================================
-Python 2.7    
-mechanize
-PySocks
-beautifulsoup4
-html5lib
-Nmap (--nmap)  
-TOR (--tor)
+* Python 2.7    
+* mechanize  
+* PySocks  
+* beautifulsoup4  
+* html5lib  
+* Nmap (--nmap)  
+* TOR (--tor)  
 
 Install:         
 ====================================================================================================     
@@ -86,24 +86,3 @@ optional arguments:
 		[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !
 		[Example] 'inurl:login.php'
 ```
-
-Gerando Wordlists/ Generating Wordlists
-=======================================
-[English Version]  
-
-You can generate customs wordlists using the tool wlgenerator.py located at Wordlists/wl generator  
-Inside this directory you will find 3 text files, diretorios, extensoes, paginas. These are  
-responsible to keep all the necessary informations that are required to generate a wordlist  
-
-
-
-Cangibrina é uma ferramenta multiplataforma que visa a obtenção do painel de administração de sites 
-utilizando brute-force baseado e wordlist, google, nmap e robots.txt.
-
-[Versão em Português]  
-
-Você pode gerar wordlists customizadas através da ferramenta wlgenerator.py localizada em  
-Wordlists/wl generator/  
-Dentro do diretório você encontrará 3 arquivos de texto, diretorios, extensoes, paginas. Estes  
-são responsáveis por conter as informações necessárias para a geração da wordlist.  
-
