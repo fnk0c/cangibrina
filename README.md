@@ -1,4 +1,3 @@
-[PT/EN]
 ```
    ____                  _ _          _             
   / ___|__ _ _ __   __ _(_) |__  _ __(_)_ __   __ _ 
@@ -9,15 +8,18 @@
   Dashboard Finder
 ```
 
-====================================================================================================
+* [English](#english) 
+* [Português](#português)  
 
+### English
+- - -
 Dashboard Finder 
 
 Cangibrina is a multi platform tool which aims to obtain the Dashboard of sites using brute-force 
 over wordlist, google, nmap, and robots.txt
 
-Requirements:  
-====================================================================================================
+#### Requirements:  
+
 * Python 2.7    
 * mechanize  
 * PySocks  
@@ -26,8 +28,8 @@ Requirements:
 * Nmap (--nmap)  
 * TOR (--tor)  
 
-Install:         
-====================================================================================================     
+#### Install:         
+
 **Linux**  
 ```
 	git clone http://github.com/fnk0c/cangibrina.git
@@ -35,7 +37,7 @@ Install:
 	pip install -r requeriments.txt
 ```
 
-[English Version]
+#### Usage
 
 ```
 usage: cangibrina.py [-h] -u U [-w W] [-t T] [-v] [--ext EXT] [--user-agent]
@@ -58,11 +60,10 @@ optional arguments:
 
 ```
 
-===============================================================================
+#### Examples
+
 
 ```
-	Examples:
-
 	python cangibrina.py -u facebook.com
 
 	python cangibrina.py -u facebook.com -v
@@ -83,4 +84,78 @@ optional arguments:
 
 		[IMPORTANT] DORK MUST BE WRITE BETWEEN QUOTES !
 		[Example] 'inurl:login.php'
+```
+
+### Português
+
+Dashboard Finder 
+
+Cangibrina é uma ferramenta multi plataforma que visa obter o painel de administração de sites utilizando força brute baseado em wordlist, google, nmap e robots.txt  
+
+#### Requerimentos:  
+
+* Python 2.7    
+* mechanize  
+* PySocks  
+* beautifulsoup4  
+* html5lib  
+* Nmap (--nmap)  
+* TOR (--tor)  
+
+#### Instalação:         
+
+**Linux**  
+```
+	git clone http://github.com/fnk0c/cangibrina.git
+	cd cangibrina
+	pip install -r requeriments.txt
+```
+
+#### Uso
+
+```
+uso: cangibrina.py [-h] -u U [-w W] [-t T] [-v] [--ext EXT] [--user-agent]
+                     [--tor] [--search] [--dork DORK] [--nmap [NMAP]]
+
+Rápido e poderoso admin finder
+
+argumentos opcionais:
+  -h, --help     mostra esta mensagem de ajuda e sai
+  -u U           site alvo
+  -w W           define wordlist (padrao: wl_medium)
+  -t T           define numero de threads (padrao: 5)
+  -v             habilita verbose
+  --ext EXT      filtra diretorio pela extensao do alvo
+  --user-agent   modifica user-agent
+  --tor          define TOR proxy
+  --search       usa google and duckduckgo para procurar
+  --dork DORK    define dork personalizada
+  --nmap [NMAP]  usa nmap para escanear portas e servicos
+
+```
+
+#### Exemplos
+
+
+```
+	python cangibrina.py -u facebook.com
+
+	python cangibrina.py -u facebook.com -v
+
+	python cangibrina.py -u facebook.com -w /root/diretorios.txt -t 10 -v
+
+	python cangibrina.py -u facebook.com --search -v
+
+	python cangibrina.py -u facebook.com --search --dork 'site:facebook.com inurl:login'
+
+	python cangibrina.py -u facebook.com -v --nmap
+
+	python cangibrina.py -u facebook.com -v --nmap 'sudo nmap -D 127.0.0.1 -F facebook.com'
+
+	python cangibrina.py -u facebook.com --user-agent
+
+	python cangibrina.py -u facebook.com --ext php
+
+		[IMPORTANTE] DORK DEVE SER ESCRITA ENTRE ASPAS !
+		[Exemplo] 'inurl:login.php'
 ```
