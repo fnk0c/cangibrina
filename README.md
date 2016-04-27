@@ -34,7 +34,7 @@ over wordlist, google, nmap, and robots.txt
 ```
 	git clone http://github.com/fnk0c/cangibrina.git
 	cd cangibrina
-	pip install -r requeriments.txt
+	pip install -r requirements.txt
 ```
 
 #### Usage
@@ -108,7 +108,7 @@ Cangibrina é uma ferramenta multi plataforma que visa obter o painel de adminis
 ```
 	git clone http://github.com/fnk0c/cangibrina.git
 	cd cangibrina
-	pip install -r requeriments.txt
+	pip install -r requirements.txt
 ```
 
 #### Uso
