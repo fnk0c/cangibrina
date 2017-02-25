@@ -2,7 +2,7 @@
 #coding=utf-8
 
 __AUTHOR__	= "Fnkoc"
-__DATE__	= "08/04/16"
+__DATE__	= "24/02/17"
 __VERSION__	= "0.8.6"
 __GITHUB__	= "https://github.com/fnk0c"
 
@@ -20,7 +20,7 @@ __GITHUB__	= "https://github.com/fnk0c"
     GNU General Public License for more details.
 """
 
-from sys import path
+from sys import path, argv
 import argparse
 path.append("src")
 import connection
@@ -28,9 +28,13 @@ import scans
 from time import sleep
 from threading import Thread, active_count
 
-parser = argparse.ArgumentParser(description = "Fast and powerful admin finder")
+parser = argparse.ArgumentParser(description = "Fast and powerful admin finder",\
+				add_help = False)
 
-parser.add_argument("-u", help = "target site", type = str, required = True)
+parser.add_argument("-h", "--help", help = "Shows this message and exits",\
+			action = "store_true")
+
+parser.add_argument("-u", help = "target site", type = str)
 
 parser.add_argument("-w", help = "set wordlist (default: wl_medium)", \
 					default = "./wordlists/wl_medium")
@@ -121,6 +125,21 @@ def brute(target, paths, ext, UserAgent, tor, found):
 if __name__ == "__main__":
 	import banner
 	
+	if len(argv) <= 1:
+		parser.print_help()
+		exit()
+	else:
+		if args.help == True:
+			parser.print_help()
+			exit()
+		else:
+			if args.u == None:
+				parser.print_help()
+				print("\ncangibrina.py: error: argument -u is required\n")
+				exit()
+			else:
+				pass
+
 	print("\n")
 	print("*" * 80)
 	
