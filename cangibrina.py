@@ -2,8 +2,8 @@
 #coding=utf-8
 
 __AUTHOR__	= "Fnkoc"
-__DATE__	= "24/02/17"
-__VERSION__	= "0.8.6"
+__DATE__	= "27/02/17"
+__VERSION__	= "0.8.7"
 __GITHUB__	= "https://github.com/fnk0c"
 
 '''Agradecimento especial ao Maximoz e BernardoGO'''
@@ -46,13 +46,16 @@ parser.add_argument("-v", help = "enable verbose", \
 					default = False, required = False, action = "store_true")
 
 parser.add_argument("--ext", help = "filter path by target extension",\
-					default = False)
+					default = False, dest = "ext")
 
 parser.add_argument("--user-agent", help = "modify user-agent", default = False,\
 					action = "store_true", dest = "UserAgent")
 
+parser.add_argument("--sub-domain", action = "store_true", dest = "sub",\
+					help = "Search for subdomains instead of directories")
+
 parser.add_argument("--tor", help = "set TOR proxy", default = False, action = \
-					"store_true")
+					"store_true", dest = "tor")
 
 parser.add_argument("--search", help = "use google and duckduckgo to search", \
 					action = "store_true")
@@ -75,6 +78,7 @@ def check_target(target, UserAgent, tor):
 		print("Server status: Online (%s)" % HTTPcode)
 	else:
 		print("Server status: Offline (%s)" % HTTPcode)
+		exit()
 
 	redirect = conn.redirect()
 
@@ -89,12 +93,28 @@ def check_target(target, UserAgent, tor):
 			print("\nNew target: %s" % redirect)
 			return(redirect)
 
-def brute(target, paths, ext, UserAgent, tor, found):
-	def ItsTime():
-		url_target = "%s/%s" % (target, path)
-		paths.remove(path)
+class brute(object):
+	def __init__(self, target, paths, ext, UserAgent, tor, found, subdomain):
+		self.target = target
+		self.paths = paths
+		self.ext = ext
+		self.UserAgent = UserAgent
+		self.tor = tor
+		self.found = found
+		self.subdomain = subdomain
 
-		conn = connection.conn(url_target, UserAgent)
+	def ItsTime(self):
+		if self.subdomain == True:
+			if type(self.target) != list:
+				self.target = self.target.split("://")
+			else:
+				pass
+
+			url_target = "%s://%s.%s/" % (self.target[0], self.path, self.target[1])
+		else:
+			url_target = "%s/%s" % (self.target, self.path)
+
+		conn = connection.conn(url_target, self.UserAgent)
 		HTTPcode = conn.HTTPcode()
 
 		if HTTPcode == 200:
@@ -110,17 +130,31 @@ def brute(target, paths, ext, UserAgent, tor, found):
 			else:
 				pass
 
-	for path in paths:
-		if ext != False:
-			if "." in path:
-				if ext in path:
-					ItsTime()
+	def start(self):
+		for self.path in self.paths:
+			self.path = self.path.rstrip()
+
+			if self.path not in self.scanned:
+				if self.ext != False:
+					if "." in self.path:
+						if self.ext in self.path:
+							self.ItsTime()
+						else:
+							pass						
+					else:
+						self.ItsTime()
 				else:
-					pass						
+					self.ItsTime()
+				self.scanned.append(self.path)
 			else:
-				ItsTime()
-		else:
-			ItsTime()
+				pass
+
+	def run(self, t):
+		self.scanned = []
+
+		for j in range(t):
+			Thread(target = self.start).start()
+			sleep(1.2)
 
 if __name__ == "__main__":
 	import banner
@@ -148,19 +182,18 @@ if __name__ == "__main__":
 	elif args.u[:7] == "http://":
 		target = args.u
 
-	target_result = check_target(target, args.UserAgent, args.tor)
+	target_result = str(check_target(target, args.UserAgent, args.tor))
 
 	paths = []
 	with open(args.w, "r") as wordlist:
 		paths = wordlist.readlines()
 
 	found = []
-	
+
 	print(" [+] Testing...")
-	for j in range(args.t):
-		Thread(target = (brute), args = (target_result, paths, args.ext,\
-		args.UserAgent, args.tor, found)).start()
-		sleep(1.2)
+	b = brute(target_result, paths, args.ext, args.UserAgent, args.tor, found,\
+			args. sub)
+	b.run(args.t)
 
 	loop = True
 

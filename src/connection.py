@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 __AUTHOR__	= "Fnkoc"
-__DATE__	= "08/04/16"
-__VERSION__	= "0.8.6"
+__DATE__	= "27/02/17"
+__VERSION__	= "0.8.7"
 __GITHUB__	= "https://github.com/fnk0c"
 
 '''Agradecimento especial ao Maximoz e BernardoGO'''
@@ -99,7 +99,7 @@ class conn(object):
 				resp = u.urlopen(self.target).getcode()
 	
 			return(resp)
-		except u.HTTPError:
+		except (u.HTTPError, u.URLError):
 			return(404)
 	
 	def redirect(self):
