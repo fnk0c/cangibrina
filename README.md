@@ -53,6 +53,7 @@ optional arguments:
   -v             enable verbose
   --ext EXT      filter path by target extension
   --user-agent   modify user-agent
+  --sub-domain   search for sub domains instead of directories
   --tor          set TOR proxy
   --search       use google and duckduckgo to search
   --dork DORK    set custom dork
@@ -127,6 +128,7 @@ argumentos opcionais:
   -v             habilita verbose
   --ext EXT      filtra diretorio pela extensao do alvo
   --user-agent   modifica user-agent
+  --sub-domain   procura por sub domínios ao invés de diretórios
   --tor          define TOR proxy
   --search       usa google and duckduckgo para procurar
   --dork DORK    define dork personalizada
