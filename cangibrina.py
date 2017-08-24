@@ -92,6 +92,8 @@ def check_target(target, UserAgent, tor):
 		elif answer != "" or answer != "n":
 			print("\nNew target: %s" % redirect)
 			return(redirect)
+	else:
+		return(target)
 
 class brute(object):
 	def __init__(self, target, paths, ext, UserAgent, tor, found, subdomain):
@@ -191,6 +193,7 @@ if __name__ == "__main__":
 	found = []
 
 	print(" [+] Testing...")
+
 	b = brute(target_result, paths, args.ext, args.UserAgent, args.tor, found,\
 			args. sub)
 	b.run(args.t)
