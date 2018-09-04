@@ -32,7 +32,7 @@ over wordlist, google, nmap, and robots.txt
 
 **Linux**  
 ```
-	git clone http://github.com/fnk0c/cangibrina.git
+	git clone https://github.com/fnk0c/cangibrina.git
 	cd cangibrina
 	pip install -r requirements.txt
 ```
@@ -107,7 +107,7 @@ Cangibrina é uma ferramenta multi plataforma que visa obter o painel de adminis
 
 **Linux**  
 ```
-	git clone http://github.com/fnk0c/cangibrina.git
+	git clone https://github.com/fnk0c/cangibrina.git
 	cd cangibrina
 	pip install -r requirements.txt
 ```
