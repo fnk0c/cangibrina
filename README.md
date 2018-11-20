@@ -15,7 +15,7 @@
 - - -
 Dashboard Finder 
 
-Cangibrina is a multi platform tool which aims to obtain the Dashboard of sites using brute-force 
+Cangibrina is a multi platform tool which aims to obtain the admin Dashboard of sites using brute-force 
 over wordlist, google, nmap, and robots.txt
 
 #### Requirements:  
